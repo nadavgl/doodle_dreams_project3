@@ -32,19 +32,21 @@ export const LOGOUT_USER = gql`
   }
 `
 
-export const ADD_TURTLE = gql`
-  mutation AddTurtle($name: String, $weapon: String, $headbandColor: String) {
-    addTurtle(name: $name, weapon: $weapon, headbandColor: $headbandColor) {
-      name
-      headbandColor
-      weapon
+export const ADD_PROMPT = gql`
+  mutation AddPrompt($animal_1: String, $animal_2: String, $activity: String, $location: String, $weather: String) {
+    addPrompt(animal_1: $animal_1, animal_2: $animal_2, activity:$activity, location: $location, weather: $weather) {
+      animal_1
+      animal_2
+      activity
+      location
+      weather
     }
   }
 `
-
-export const DELETE_TURTLE = gql`
-  mutation DeleteTurtle($turtle_id: ID) {
-    deleteTurtle(turtle_id: $turtle_id) {
+//basically written over the DELETE_TURTLE
+export const DELETE_PROMPT = gql`
+  mutation DeletePrompt($prompt_id: ID) {
+    deletePrompt(prompt_id: $prompt_id) {
       message
     }
   }
