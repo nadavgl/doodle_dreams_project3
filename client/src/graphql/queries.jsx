@@ -13,8 +13,8 @@ export const GET_USER = gql`
 `
 
 export const GET_USER_TURTLES = gql`
-  query GetUserTurtles {
-    getUserTurtles {
+  query GetUserPrompts {
+    getUserPrompts {
       _id
       headbandColor
       name
