@@ -12,27 +12,31 @@ export const GET_USER = gql`
   }
 `
 
-export const GET_USER_TURTLES = gql`
-  query GetUserTurtles {
-    getUserTurtles {
+export const GET_USER_PROMPTS = gql`
+  query GetUserPrompts {
+    getUserPrompts {
       _id
-      headbandColor
-      name
-      weapon
+      animal_1
+      animal_2
+      activity
+      location
+      weather
     }
   }
 `
-
-export const GET_ALL_TURTLES = gql`
-  query GetAllTurtles {
-    getAllTurtles {
+//written over the Turtle Get ALL
+export const GET_ALL_PROMPTS = gql`
+  query GetAllPrompts {
+    getAllPrompts {
       _id
-      headbandColor
-      name
+      animal_1
+      animal_2
+      activity
+      location
+      weather
       user {
         username
       }
-      weapon
     }
   }
 `
