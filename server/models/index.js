@@ -1,7 +1,7 @@
 const User = require('./User');
-const Turtle = require('./Turtle');
+const Prompt = require('./Prompt');
 
 module.exports = {
   User,
-  Turtle
+  Prompt
 }

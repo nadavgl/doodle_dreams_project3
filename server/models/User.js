@@ -28,9 +28,9 @@ const userSchema = new Schema({
     minLength: [6, 'Your password must be at least 6 characters in length']
   },
 
-  turtles: [{
+  prompts: [{
     type: Schema.Types.ObjectId,
-    ref: 'Turtle'
+    ref: 'Prompt'
   }]
 }, {
   // Edit the user's object before it gets sent out in a JSON response to the browser/client
