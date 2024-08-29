@@ -13,6 +13,7 @@ export const GET_USER = gql`
 `
 
 export const GET_USER_PROMPTS = gql`
+
   query GetUserPrompts {
     getUserPrompts {
       _id

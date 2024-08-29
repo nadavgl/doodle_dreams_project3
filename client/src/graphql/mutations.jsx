@@ -33,6 +33,7 @@ export const LOGOUT_USER = gql`
 `
 
 export const ADD_PROMPT = gql`
+
   mutation AddPrompt($animal_1: String, $animal_2: String, $activity: String, $location: String, $weather: String) {
     addPrompt(animal_1: $animal_1, animal_2: $animal_2, activity:$activity, location: $location, weather: $weather) {
       animal_1
@@ -47,7 +48,15 @@ export const ADD_PROMPT = gql`
 export const DELETE_PROMPT = gql`
   mutation DeletePrompt($prompt_id: ID) {
     deletePrompt(prompt_id: $prompt_id) {
+
       message
     }
   }
 `
+export const GENERATE_IMAGE = gql`
+  mutation GenerateImage($prompt: String!) {
+    generateImage(prompt: $prompt) {
+      imageUrl
+    }
+  }
+`;
