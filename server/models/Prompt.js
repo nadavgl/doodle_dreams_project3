@@ -1,29 +1,29 @@
 const { model, Schema } = require('mongoose');
 
 const promptSchema = new Schema({
-  Animal_1: {
+  animal_1: {
     type: String,
     required: true,
   },
 
-  Animal_2: {
+  animal_2: {
     type: String,
     required: true
   },
 
-  Activity: {
+  activity: {
     type: String,
     required: true
   },
-  Location: {
+  location: {
     type: String,
     required: true
   },
-  Weather: {
+  weather: {
     type: String,
     required: true
   },
-
+//
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
