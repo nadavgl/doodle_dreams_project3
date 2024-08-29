@@ -1,4 +1,4 @@
-const { User, Turtle } = require('../models');
+const { User, Prompt } = require('../models');
 const { sign } = require('jsonwebtoken');
 
 const { GraphQLError } = require('graphql');
@@ -33,7 +33,7 @@ const resolvers = {
       };
     },
 
-    async getUserTurtles(_, args, context) {
+    async getUserPrompts(_, args, context) {
       const user_id = context.user_id;
 
       if (!user_id) {
@@ -42,15 +42,15 @@ const resolvers = {
         })
       }
 
-      const user = await User.findById(user_id).populate('turtles');
+      const user = await User.findById(user_id).populate('prompts');
 
-      return user.turtles;
+      return user.prompts;
     },
 
-    async getAllTurtles() {
-      const turtles = await Turtle.find().populate('user');
+    async getAllPrompts() {
+      const prompts = await Prompt.find().populate('user');
 
-      return turtles;
+      return prompts;
     }
   },
 
@@ -116,8 +116,8 @@ const resolvers = {
       }
     },
 
-    // Turtle Resolvers
-    async addTurtle(_, args, context) {
+    // Prompt Resolvers
+    async addPrompt(_, args, context) {
       const user_id = context.user_id;
 
       if (!user_id) {
@@ -125,18 +125,18 @@ const resolvers = {
       }
 
       const user = await User.findById(user_id);
-      const turtle = await Turtle.create({
+      const prompt = await Prompt.create({
         ...args,
         user: user._id
       });
 
-      user.turtles.push(turtle._id);
+      user.prompts.push(prompt._id);
       await user.save();
 
-      return turtle
+      return prompt
     },
 
-    async deleteTurtle(_, args, context) {
+    async deletePrompt(_, args, context) {
       const user_id = context.user_id;
 
       if (!user_id) {
@@ -145,19 +145,19 @@ const resolvers = {
 
       const user = await User.findById(user_id);
 
-      if (!user.turtles.includes(args.turtle_id)) {
-        throw new GraphQLError('You cannot delete a turtle that you did not add');
+      if (!user.prompts.includes(args.prompt_id)) {
+        throw new GraphQLError('You cannot delete a prompt that you did not add');
       }
 
-      await Turtle.deleteOne({
-        _id: args.turtle_id
+      await Prompt.deleteOne({
+        _id: args.prompt_id
       });
 
-      user.turtles.pull(args.turtle_id);
+      user.prompts.pull(args.prompt_id);
       await user.save();
 
       return {
-        message: 'Turtle deleted successfully'
+        message: 'Prompt deleted successfully'
       }
     }
   }

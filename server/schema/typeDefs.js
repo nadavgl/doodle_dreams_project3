@@ -7,11 +7,13 @@ const typeDefs = gql`
     email: String
   }
 
-  type Turtle {
+  type Prompt {
     _id: ID
-    name: String
-    weapon: String
-    headbandColor: String
+    Animal_1: String
+    Animal_2: String
+    Activity: String
+    Location: String
+    Weather: String
     user: User
   }
 
@@ -26,8 +28,8 @@ const typeDefs = gql`
 
   type Query {
     getUser: AuthResponse
-    getUserTurtles: [Turtle]
-    getAllTurtles: [Turtle]
+    getUserPrompts: [Prompt]
+    getAllPrompts: [Prompt]
   }
 
   type Mutation {
@@ -36,9 +38,9 @@ const typeDefs = gql`
     loginUser(email: String, password: String): AuthResponse
     logoutUser: AuthResponse
 
-    # Turtle Mutations
-    addTurtle(name: String, weapon: String, headbandColor: String): Turtle
-    deleteTurtle(turtle_id: ID): Response
+    # Prompt Mutations
+    addPrompt(Animal_1: String, Animal_2: String, Activity: String, Location: String, Weather: String): Prompt
+    deletePrompt(prompt_id: ID): Response
   }
 `;
 
