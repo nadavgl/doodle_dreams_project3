@@ -1,0 +1,206 @@
+$green: #3fbd75;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+button {
+  cursor: pointer;
+}
+
+// GLOBAL CLASSES
+.row,
+.column {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+// CUSTOM STYLES
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 500;
+  background-image: linear-gradient(rgba(0, 0, 0, .6), rgba(0, 0, 0, .5)), url(/images/turtle_reading.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  h1 {
+    color: $green;
+    text-shadow: 1px 1px 5px #000;
+  }
+}
+
+header {
+  padding: 10px 5%;
+  background: $green;
+  color: #eee;
+  h3 {
+    color: #eee;
+  }
+
+  p {
+    margin-right: 15px;
+  }
+
+  a.dashboard-link {
+    color: #eee;
+    margin-right: 10px;
+    &:hover, &.active {
+      text-decoration: underline;
+    }
+  }
+
+  button {
+    background: none;
+    border: 1px solid #eee;
+    color: #eee;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: all .3s;
+    &:hover {
+      background: #eee;
+      color: #555;
+    }
+  }
+
+  nav {
+    a {
+      color: #eee;
+
+      &:not(:last-child) {
+        margin-right: 7px;
+      }
+
+      &.active,
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// Homepage Styles
+section.hero {
+  background-image: url(/images/hero_turtle.jpeg);
+  background-position: center;
+  background-size: cover;
+  height: 600px;
+}
+
+
+
+form {
+  width: 400px;
+  margin: 25px auto;
+  > * {
+    padding: 6px 10px;
+    margin-bottom: 6px;
+  }
+  h2 {
+    color: $green;
+  }
+
+  input:focus {
+    outline: 2px solid lighten($green, 10%);
+  }
+  
+  button {
+    background: $green;
+    color: #fff;
+    border: none;
+    padding: 7px 0;
+    font-size: 1rem;
+  }
+
+  p {
+    color: $green;
+    &.error-message {
+      color: #fc224d;
+    }
+    span {
+      color: #fd7d0d;
+      cursor: pointer;
+    }
+  }
+}
+
+// Turtle Styles
+section.turtle-container {
+  padding: 25px 5%;
+
+  h1 {
+    color: $green;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    color: #999;
+  }
+
+  .turtle-output {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    article {
+      border: 3px solid $green;
+      padding: 20px;
+      border-radius: 10px;
+      h3 {
+        color: $green;
+      }
+
+      p {
+        color: #777;
+        margin-top: 5px;
+      }
+
+      button {
+        margin-top: 8px;
+        background: #da6789;
+        color: #fff;
+        padding: 4px 8px;
+        border: none;
+        border-radius: 3px; 
+      }
+    }
+  }
+}

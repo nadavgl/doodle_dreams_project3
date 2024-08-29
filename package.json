@@ -1,0 +1,21 @@
+{
+  "name": "mern_overview",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server:dev": "cd ./server && npm run dev",
+    "client:dev": "cd ./client && npm run dev",
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "build": "cd ./client && npm run build",
+    "deploy": "npm run build && git add -A && git commit -m \"ready for deploy\" && git push example HEAD:main",
+    "install": "cd ./server && npm i",
+    "start": "cd ./server && npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
