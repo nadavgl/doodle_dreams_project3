@@ -12,14 +12,14 @@ const initialFormData = {
 
 function Dashboard() {
   const [formData, setFormData] = useState(initialFormData)
-  const [addTurtle] = useMutation(ADD_TURTLE, {
+  const [addTurtle] = useMutation(ADD_PROMPT, {
     variables: formData,
-    refetchQueries: [GET_USER_TURTLES, GET_ALL_TURTLES]
+    refetchQueries: [GET_USER_PROMPTS, GET_ALL_PROMPTS]
   })
-  const [deleteTurtle] = useMutation(DELETE_TURTLE, {
-    refetchQueries: [GET_USER_TURTLES, GET_ALL_TURTLES]
+  const [deletePrompt] = useMutation(DELETE_PROMPT, {
+    refetchQueries: [GET_USER_PROMPT, GET_ALL_PROMPT]
   })
-  const { data: turtleData } = useQuery(GET_USER_TURTLES)
+  const { data: promptData } = useQuery(GET_USER_PROMPT)
 
   const handleInputChange = event => {
     setFormData({
@@ -40,9 +40,9 @@ function Dashboard() {
     })
   }
 
-  const handleDeleteTurtle = async (id) => {
+  const handleDeletePrompt = async (id) => {
     try {
-      await deleteTurtle({
+      await deletePrompt({
         variables: {
           turtle_id: id
         }
@@ -55,7 +55,7 @@ function Dashboard() {
   return (
     <>
       <form onSubmit={handleSubmit} className="column">
-        <h2 className="text-center">Add a Ninja Turtle</h2>
+        <h2 className="text-center">Add a new Prompt</h2>
 
         <input type="text" onChange={handleInputChange} value={formData.name} name="name" placeholder="Enter the Turtle's name (Must be a renaissance artist)" />
         <input type="text" onChange={handleInputChange} value={formData.weapon} name="weapon" placeholder="Enter the Turtle's weapon" />
@@ -67,10 +67,10 @@ function Dashboard() {
       <section className="turtle-container">
         <h1>Your Turtles:</h1>
 
-        {!turtleData?.getUserTurtles.length && <h2>No turtles have beed added.</h2>}
+        {!promptData?.getUserTurtles.length && <h2>No turtles have beed added.</h2>}
 
         <div className="turtle-output">
-          {turtleData?.getUserTurtles.map(turtleObj => (
+          {promptData?.getUserTurtles.map(turtleObj => (
             <article key={turtleObj._id}>
               <h3>{turtleObj.name}</h3>
               <p>Weapon: {turtleObj.weapon}</p>
