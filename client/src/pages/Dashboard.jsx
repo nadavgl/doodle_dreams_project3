@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { ADD_PROMPT, DELETE_PROMPT, GENERATE_IMAGE } from '../graphql/mutations';
 import { GET_USER_PROMPTS, GET_ALL_PROMPTS } from '../graphql/queries';
+import ImageModal from '../components/ImageModal';
 
 const initialFormData = {
   animal_1: '',
@@ -48,13 +49,13 @@ function Dashboard() {
 
     try {
       // Add prompt
-      
+
       // Generate the image
       const promptText = createPrompt();
       const imageResponse = await generateImage({ variables: { prompt: promptText } });
       console.log(imageResponse)
       await addPrompt({
-        variables:{
+        variables: {
           ...formData,
           imageUrl: imageResponse.data.generateImage.imageUrl
         }
@@ -86,6 +87,7 @@ function Dashboard() {
 
   return (
     <>
+      <ImageModal />
       <form onSubmit={handleSubmit} className="column">
         <h2 className="text-center">Create Image</h2>
 
