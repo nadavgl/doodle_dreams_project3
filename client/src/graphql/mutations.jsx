@@ -34,8 +34,8 @@ export const LOGOUT_USER = gql`
 
 export const ADD_PROMPT = gql`
 
-  mutation AddPrompt($animal_1: String, $animal_2: String, $activity: String, $location: String, $weather: String) {
-    addPrompt(animal_1: $animal_1, animal_2: $animal_2, activity:$activity, location: $location, weather: $weather) {
+  mutation AddPrompt($animal_1: String, $animal_2: String, $activity: String, $location: String, $weather: String, $imageUrl: String) {
+    addPrompt(animal_1: $animal_1, animal_2: $animal_2, activity: $activity, location: $location, weather: $weather, imageUrl: $imageUrl) {
       animal_1
       animal_2
       activity

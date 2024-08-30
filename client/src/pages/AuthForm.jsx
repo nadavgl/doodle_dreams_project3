@@ -59,7 +59,7 @@ function AuthForm() {
         setState((oldState) => {
           return {
             ...oldState,
-            user: res.data.loginUser.user
+            user: res.data.registerUser.user
           }
         })
       }

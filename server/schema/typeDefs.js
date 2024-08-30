@@ -43,7 +43,7 @@ const typeDefs = gql`
     logoutUser: AuthResponse
 
     # Prompt Mutations
-    addPrompt(animal_1: String, animal_2: String, activity: String, location: String, weather: String): Prompt
+    addPrompt(animal_1: String, animal_2: String, activity: String, location: String, weather: String, imageUrl: String): Prompt
     deletePrompt(prompt_id: ID): Response
 
     # DALL-E Image Generation Mutation

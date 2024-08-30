@@ -22,7 +22,6 @@ const choices = {
 function Dashboard() {
   const [formData, setFormData] = useState(initialFormData);
   const [addPrompt] = useMutation(ADD_PROMPT, {
-    variables: formData,
     refetchQueries: [GET_USER_PROMPTS, GET_ALL_PROMPTS]
   });
   const [deletePrompt] = useMutation(DELETE_PROMPT, {
@@ -49,11 +48,18 @@ function Dashboard() {
 
     try {
       // Add prompt
-      await addPrompt();
-
+      
       // Generate the image
       const promptText = createPrompt();
       const imageResponse = await generateImage({ variables: { prompt: promptText } });
+      console.log(imageResponse)
+      await addPrompt({
+        variables:{
+          ...formData,
+          imageUrl: imageResponse.data.generateImage.imageUrl
+        }
+
+      });
 
       // Clear form after submission
       setFormData(initialFormData);

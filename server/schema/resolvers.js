@@ -95,13 +95,15 @@ const resolvers = {
       }
 
       const user = await User.findById(user_id);
+      console.log(args)
       const prompt = await Prompt.create({
         ...args,
         user: user._id
-      });
+      })
 
-      user.prompts.push(prompt._id);
-      await user.save();
+      user.prompts.push(prompt._id)
+
+      await user.save()
 
       return prompt;
     },
@@ -133,9 +135,13 @@ const resolvers = {
       }
 
       try {
-        const response = await fal.subscribe("fal-ai/fast-sdxl", {
+        const response = await fal.subscribe("fal-ai/flux", {
           input: {
             prompt: prompt,
+            size: {
+              width: 512,
+              height: 512,
+            },
             // Add other options if needed
           },
           logs: true,
@@ -146,7 +152,8 @@ const resolvers = {
           }
         });
 
-        const imageUrl = response.data.images[0].url; // Adjust this based on the response structure
+        const imageUrl = response.images[0].url; // Adjust this based on the response structure
+
         return { imageUrl };
       } catch (error) {
         console.error('Error generating image:', error);
