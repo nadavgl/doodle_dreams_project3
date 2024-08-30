@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { ADD_PROMPT, DELETE_PROMPT, GENERATE_IMAGE } from '../graphql/mutations';
+import { DELETE_PROMPT, GENERATE_IMAGE } from '../graphql/mutations';
 import { GET_USER_PROMPTS, GET_ALL_PROMPTS } from '../graphql/queries';
 import ImageModal from '../components/ImageModal';
 
@@ -9,7 +9,8 @@ const initialFormData = {
   animal_2: '',
   activity: '',
   location: '',
-  weather: ''
+  weather: '',
+  imageUrl: ''
 };
 
 const choices = {
@@ -21,10 +22,10 @@ const choices = {
 };
 
 function Dashboard() {
+  const [modalOpen, setModalOpen] = useState(false)
+
   const [formData, setFormData] = useState(initialFormData);
-  const [addPrompt] = useMutation(ADD_PROMPT, {
-    refetchQueries: [GET_USER_PROMPTS, GET_ALL_PROMPTS]
-  });
+
   const [deletePrompt] = useMutation(DELETE_PROMPT, {
     refetchQueries: [GET_USER_PROMPTS, GET_ALL_PROMPTS]
   });
@@ -53,17 +54,13 @@ function Dashboard() {
       // Generate the image
       const promptText = createPrompt();
       const imageResponse = await generateImage({ variables: { prompt: promptText } });
-      console.log(imageResponse)
-      await addPrompt({
-        variables: {
-          ...formData,
-          imageUrl: imageResponse.data.generateImage.imageUrl
-        }
 
-      });
+      await setFormData({
+        ...formData,
+        imageUrl: imageResponse.data.generateImage.imageUrl,
+      })
+      setModalOpen(true)
 
-      // Clear form after submission
-      setFormData(initialFormData);
     } catch (error) {
       console.error('Error adding prompt or generating image:', error);
     }
@@ -87,7 +84,7 @@ function Dashboard() {
 
   return (
     <>
-      <ImageModal />
+      <ImageModal initialFormData={initialFormData} setFormData={setFormData} handleSubmit={handleSubmit} modalOpen={modalOpen} setModalOpen={setModalOpen} formData={formData} />
       <form onSubmit={handleSubmit} className="column">
         <h2 className="text-center">Create Image</h2>
 

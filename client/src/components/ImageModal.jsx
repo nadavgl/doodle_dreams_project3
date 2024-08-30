@@ -1,74 +1,49 @@
-import stuff, {  Modal, Media, Content, MediaItem, Button } from 'react-bulma-components'
-// stuff.Button.
-function ImageModal() {
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
+
+import { ADD_PROMPT } from "../graphql/mutations";
+import { GET_USER_PROMPTS, GET_ALL_PROMPTS } from "../graphql/queries";
+
+
+
+function ImageModal(props) {
+
+    const [addPrompt] = useMutation(ADD_PROMPT, {
+        refetchQueries: [GET_USER_PROMPTS, GET_ALL_PROMPTS]
+    });
+
+    const saveGeneration = async () => {
+        await addPrompt({
+            variables: {
+                ...props.formData,
+            }
+
+        });
+        props.setModalOpen(false)
+        props.setFormData(props.initialFormData)
+    }
+
+
+
+    function closeModal() {
+        props.setModalOpen(false)
+    }
+
     return (
-        <>
-            <Button.Group renderAs="div">
-                <Button
-                    color="info"
-                    onClick={() => console.log('Button clicked')}
-                >
-                    Open Card Modal
-                </Button>
-            </Button.Group>
-            <Modal 
-                show={true}
-                onClose={() => console.log('Button clicked')}
-            >
-                <Modal.Card>
-                    <Modal.Card.Header>
-                        <Modal.Card.Title>
-                            Title
-                        </Modal.Card.Title>
-                    </Modal.Card.Header>
-                    <Modal.Card.Body>
-                        <Media>
-                            <Media.Item
-                                align="left"
-                                renderAs="figure"
-                            >
-                                <Image
-                                    alt="64x64"
-                                    size={64}
-                                    src="http://bulma.io/images/placeholders/128x128.png"
-                                />
-                            </Media.Item>
-                            <Media.Item>
-                                <Content>
-                                    <p>
-                                        <strong>
-                                            John Smith
-                                        </strong>
-                                        {' '}
-                                        <small>
-                                            @johnsmith
-                                        </small>
-                                        {' '}
-                                        <small>
-                                            31m
-                                        </small>
-                                        <br />
-                                        If the children of the Modal is a card, the close button will be on the Card Head instead than the top-right corner You can also pass showClose = false to Card.Head to hide the close button
-                                    </p>
-                                </Content>
-                            </Media.Item>
-                        </Media>
-                    </Modal.Card.Body>
-                    <Modal.Card.Footer
-                        align="right"
-                        hasAddons
-                        renderAs={function noRefCheck() { }}
-                    >
-                        <Button color="success">
-                            Like
-                        </Button>
-                        <Button>
-                            Share
-                        </Button>
-                    </Modal.Card.Footer>
-                </Modal.Card>
-            </Modal>
-        </>
+        <div className={`modal ${props.modalOpen ? 'is-active' : ''}`}>
+            <div className="modal-background"></div>
+            <div className="modal-content">
+                <p className="image is-4by3">
+                    <img src={props.formData.imageUrl} alt="generated image" />
+                </p>
+                <div className="is-flex-direction-row mt-3">
+                    <button onClick={props.handleSubmit} className="button is-warning mr-3">Regenerate</button>
+                    <button onClick={saveGeneration} className="button is-primary">Save</button>
+                </div>
+            </div>
+            <button onClick={closeModal} className="modal-close is-large" aria-label="close"></button>
+        </div>
+
     )
 }
 
