@@ -19,6 +19,8 @@
     "concurrently": "^8.2.2"
   },
   "dependencies": {
-    "axios": "^1.7.5"
+    "@fal-ai/serverless-client": "^0.14.2",
+    "axios": "^1.7.5",
+    "openai": "^4.57.0"
   }
 }

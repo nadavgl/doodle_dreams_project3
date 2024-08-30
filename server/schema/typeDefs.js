@@ -9,11 +9,11 @@ const typeDefs = gql`
 
   type Prompt {
     _id: ID
-    Animal_1: String
-    Animal_2: String
-    Activity: String
-    Location: String
-    Weather: String
+    animal_1: String
+    animal_2: String
+    activity: String
+    location: String
+    weather: String
     user: User
   }
 
@@ -43,7 +43,7 @@ const typeDefs = gql`
     logoutUser: AuthResponse
 
     # Prompt Mutations
-    addPrompt(Animal_1: String, Animal_2: String, Activity: String, Location: String, Weather: String): Prompt
+    addPrompt(animal_1: String, animal_2: String, activity: String, location: String, weather: String, imageUrl: String): Prompt
     deletePrompt(prompt_id: ID): Response
 
     # DALL-E Image Generation Mutation

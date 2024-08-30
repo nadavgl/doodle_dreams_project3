@@ -1,14 +1,16 @@
 const { User, Prompt } = require('../models');
 const { sign } = require('jsonwebtoken');
 const { GraphQLError } = require('graphql');
-const axios = require('axios');
-
+const fal = require('@fal-ai/serverless-client'); // Import Fal AI client
 
 function createToken(user_id) {
-  const token = sign({ user_id: user_id }, process.env.JWT_SECRET);
-
-  return token;
+  return sign({ user_id }, process.env.JWT_SECRET);
 }
+
+// Initialize Fal AI client
+fal.config({
+  credentials: process.env.FAL_KEY // Ensure this matches the environment variable
+});
 
 const resolvers = {
   Query: {
@@ -16,42 +18,26 @@ const resolvers = {
       const user_id = context.user_id;
 
       if (!user_id) {
-        return {
-          user: null
-        }
+        return { user: null };
       }
 
       const user = await User.findById(user_id);
-
-      if (!user) {
-        return {
-          user: null
-        }
-      }
-
-      return {
-        user
-      };
+      return { user: user || null };
     },
 
     async getUserPrompts(_, args, context) {
       const user_id = context.user_id;
 
       if (!user_id) {
-        throw new GraphQLError({
-          message: 'Not Authorized'
-        })
+        throw new GraphQLError('Not Authorized');
       }
 
       const user = await User.findById(user_id).populate('prompts');
-
       return user.prompts;
     },
 
     async getAllPrompts() {
-      const prompts = await Prompt.find().populate('user');
-
-      return prompts;
+      return await Prompt.find().populate('user');
     }
   },
 
@@ -59,33 +45,26 @@ const resolvers = {
     async registerUser(_, args, context) {
       try {
         const user = await User.create(args);
-
-        // Create a cookie and attach a JWT token
         const token = createToken(user._id);
 
         context.res.cookie('token', token, {
           httpOnly: true
         });
 
-        return {
-          message: 'User registered successfully!',
-          user
-        }
+        return { message: 'User registered successfully!', user };
       } catch (error) {
-        console.log('register error', error);
+        console.error('Register error:', error);
 
         if (error.code === 11000) {
-          throw new GraphQLError('A user with that email address or username already exists')
+          throw new GraphQLError('A user with that email address or username already exists');
         }
 
-        throw new GraphQLError(error.message.split(':')[2].trim());
+        throw new GraphQLError(error.message.split(':')[2]?.trim() || 'Registration error');
       }
     },
 
     async loginUser(_, args, context) {
-      const user = await User.findOne({
-        email: args.email
-      });
+      const user = await User.findOne({ email: args.email });
 
       if (!user) {
         throw new GraphQLError('No user found by that email address.');
@@ -97,51 +76,43 @@ const resolvers = {
         throw new GraphQLError('Password incorrect.');
       }
 
-      const token = createToken(user._id); // Create a JWT
+      const token = createToken(user._id);
+      context.res.cookie('token', token, { httpOnly: true });
 
-      context.res.cookie('token', token, {
-        httpOnly: true
-      }); // Send a cookie with the JWT attached
-
-      return {
-        message: 'Logged in successfully!',
-        user
-      }
+      return { message: 'Logged in successfully!', user };
     },
 
     logoutUser(_, args, context) {
       context.res.clearCookie('token');
-
-      return {
-        message: 'Logged out successfully'
-      }
+      return { message: 'Logged out successfully' };
     },
 
-    // Prompt Resolvers
     async addPrompt(_, args, context) {
       const user_id = context.user_id;
 
       if (!user_id) {
-        throw new GraphQLError('You are not authorized to perform that action')
+        throw new GraphQLError('You are not authorized to perform that action');
       }
 
       const user = await User.findById(user_id);
+      console.log(args)
       const prompt = await Prompt.create({
         ...args,
         user: user._id
-      });
+      })
 
-      user.prompts.push(prompt._id);
-      await user.save();
+      user.prompts.push(prompt._id)
 
-      return prompt
+      await user.save()
+
+      return prompt;
     },
 
     async deletePrompt(_, args, context) {
       const user_id = context.user_id;
 
       if (!user_id) {
-        throw new GraphQLError('You are not authorized to perform that action')
+        throw new GraphQLError('You are not authorized to perform that action');
       }
 
       const user = await User.findById(user_id);
@@ -150,42 +121,42 @@ const resolvers = {
         throw new GraphQLError('You cannot delete a prompt that you did not add');
       }
 
-      await Prompt.deleteOne({
-        _id: args.prompt_id
-      });
+      await Prompt.deleteOne({ _id: args.prompt_id });
 
       user.prompts.pull(args.prompt_id);
       await user.save();
 
-      return {
-        message: 'Prompt deleted successfully'
-      }
+      return { message: 'Prompt deleted successfully' };
     },
+
     async generateImage(_, { prompt }, context) {
       if (!context.user_id) {
         throw new GraphQLError('You are not authorized to perform that action');
       }
 
       try {
-        const response = await axios.post(
-          'https://api.openai.com/v1/images/generations',
-          {
+        const response = await fal.subscribe("fal-ai/flux", {
+          input: {
             prompt: prompt,
-            n: 1,
-            size: '1024x1024',
-          },
-          {
-            headers: {
-              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-              'Content-Type': 'application/json',
+            size: {
+              width: 512,
+              height: 512,
             },
+            // Add other options if needed
+          },
+          logs: true,
+          onQueueUpdate: (update) => {
+            if (update.status === "IN_PROGRESS") {
+              update.logs.map((log) => log.message).forEach(console.log);
+            }
           }
-        );
+        });
 
-        const imageUrl = response.data.data[0].url;
+        const imageUrl = response.images[0].url; // Adjust this based on the response structure
+
         return { imageUrl };
       } catch (error) {
-        console.error('Error generating image:', error.response.data);
+        console.error('Error generating image:', error);
         throw new GraphQLError('Failed to generate image');
       }
     }

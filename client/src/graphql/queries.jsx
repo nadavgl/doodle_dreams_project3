@@ -25,7 +25,7 @@ export const GET_USER_PROMPTS = gql`
     }
   }
 `
-//written over the Turtle Get ALL
+
 export const GET_ALL_PROMPTS = gql`
   query GetAllPrompts {
     getAllPrompts {
