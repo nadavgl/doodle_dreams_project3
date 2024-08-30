@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
+import 'bulma/css/bulma.min.css';
 
 import './index.scss'
 
