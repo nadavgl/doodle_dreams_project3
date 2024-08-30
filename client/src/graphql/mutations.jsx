@@ -44,7 +44,6 @@ export const ADD_PROMPT = gql`
     }
   }
 `
-//basically written over the DELETE_TURTLE
 export const DELETE_PROMPT = gql`
   mutation DeletePrompt($prompt_id: ID) {
     deletePrompt(prompt_id: $prompt_id) {

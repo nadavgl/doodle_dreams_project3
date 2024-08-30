@@ -1,19 +1,16 @@
 const { User, Prompt } = require('../models');
 const { sign } = require('jsonwebtoken');
 const { GraphQLError } = require('graphql');
-// const { OpenAI } = require('openai');
-const axios = require('axios');
-
+const fal = require('@fal-ai/serverless-client'); // Import Fal AI client
 
 function createToken(user_id) {
   return sign({ user_id }, process.env.JWT_SECRET);
 }
 
-// // Initialize OpenAI client
-// const openai = new OpenAI({
-//   apiKey: process.env.OPEN_AI_KEY // Ensure this matches the environment variable
-
-// });
+// Initialize Fal AI client
+fal.config({
+  credentials: process.env.FAL_KEY // Ensure this matches the environment variable
+});
 
 const resolvers = {
   Query: {
@@ -134,29 +131,25 @@ const resolvers = {
       if (!context.user_id) {
         throw new GraphQLError('You are not authorized to perform that action');
       }
-      console.log('API Key:', process.env.OPENAI_API_KEY);
 
-  
       try {
-        const response = await axios.post(
-          'https://api.openai.com/v1/images/generations',
-          {
+        const response = await fal.subscribe("fal-ai/fast-sdxl", {
+          input: {
             prompt: prompt,
-            n: 1,
-            size: '1024x1024',
+            // Add other options if needed
           },
-          {
-            headers: {
-              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-              'Content-Type': 'application/json',
-            },
+          logs: true,
+          onQueueUpdate: (update) => {
+            if (update.status === "IN_PROGRESS") {
+              update.logs.map((log) => log.message).forEach(console.log);
+            }
           }
-        );
-  
-        const imageUrl = response.data.data[0].url;
+        });
+
+        const imageUrl = response.data.images[0].url; // Adjust this based on the response structure
         return { imageUrl };
       } catch (error) {
-        console.error('Error generating image:', error.response.data);
+        console.error('Error generating image:', error);
         throw new GraphQLError('Failed to generate image');
       }
     }
