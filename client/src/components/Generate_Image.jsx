@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useMutation } from '@apollo/client';
 import { GENERATE_IMAGE } from '../graphql/mutations';
 
-function GenerateImage() {
-  const [prompt, setPrompt] = useState('');
+function Generate_Image({ prompt }) {
   const [generateImage, { data, loading, error }] = useMutation(GENERATE_IMAGE);
 
   const handleGenerate = async () => {
     try {
-      await generateImage({ variables: { prompt } });
+      const response = await generateImage({ variables: { prompt } });
+
+      // Handle the response if needed
+      console.log(response);
     } catch (err) {
       console.error('Error generating image:', err);
     }
@@ -16,14 +18,8 @@ function GenerateImage() {
 
   return (
     <div>
-      <input
-        type="text"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        placeholder="Enter your prompt"
-      />
       <button onClick={handleGenerate} disabled={loading}>
-        Generate Image
+        {loading ? 'Generating...' : 'Generate Image'}
       </button>
       {error && <p>Error: {error.message}</p>}
       {data && <img src={data.generateImage.imageUrl} alt="Generated" />}
@@ -31,4 +27,4 @@ function GenerateImage() {
   );
 }
 
-export default GenerateImage;
+export default Generate_Image;

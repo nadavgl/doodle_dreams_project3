@@ -26,9 +26,9 @@ export const GET_USER_PROMPTS = gql`
   }
 `
 
-export const GET_ALL_TURTLES = gql`
-  query GetAllTurtles {
-    getAllTurtles {
+export const GET_ALL_PROMPTS = gql`
+  query GetAllPrompts {
+    getAllPrompts {
       _id
       animal_1
       animal_2
