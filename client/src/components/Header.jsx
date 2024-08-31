@@ -25,7 +25,7 @@ function Header() {
   return (
     <header className="row justify-between align-center">
       <NavLink to="/">
-        <h3>Dream Doodle</h3>
+        <h3>Doodle Dreams</h3>
       </NavLink>
 
       {state.user ? (
