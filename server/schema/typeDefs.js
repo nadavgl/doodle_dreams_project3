@@ -14,6 +14,7 @@ const typeDefs = gql`
     activity: String
     location: String
     weather: String
+    imageUrl: String  # Added imageUrl field
     user: User
   }
 

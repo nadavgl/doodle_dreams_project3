@@ -22,6 +22,7 @@ export const GET_USER_PROMPTS = gql`
       activity
       location
       weather
+      imageUrl
     }
   }
 `
