@@ -15,6 +15,8 @@
 For out final project, we decided to come together to create a React + Vite site that allows users to register and generate images. These images are created through FAL AI API.
 This application is meant to be a form of entertainment for young children to allow them to create images using AI art.
 
+We ensure a kid-friendly environment with our preselected options so prompts cannot be manipulated in any way.
+
 
 Parameters:
 
@@ -46,7 +48,7 @@ The Weather
     @Apollo/client
 
    ## Test Instructions
-   npm run dev
+   npm run dev in parent directory
 
    ## Useage
 
