@@ -88,6 +88,8 @@ function Dashboard() {
 
   return (
     <>
+    <section className="dash-bg column align-center">
+
       <ImageModal 
         initialFormData={initialFormData} 
         setFormData={setFormData} 
@@ -99,7 +101,7 @@ function Dashboard() {
         isNewImage={isNewImage}  // Pass the state to ImageModal
       />
       
-      <form onSubmit={handleSubmit} className="column">
+      <form onSubmit={handleSubmit} className="form-pic column">
         <h2 className="text-center">Create Image</h2>
 
         <label htmlFor="animal_1">Select Animal</label>
@@ -152,7 +154,7 @@ function Dashboard() {
           ))}
         </select>
 
-        <button type="submit">Add</button>
+        <button type="submit">Add 🎨</button>
       </form>
 
 
@@ -169,19 +171,13 @@ function Dashboard() {
               <p>Activity: {promptObj.activity}</p>
               <p>Location: {promptObj.location}</p>
               <p>Weather: {promptObj.weather}</p>
-              <button onClick={() => handleDeletePrompt(promptObj._id)}>Delete</button>
-              <button onClick={() => handleViewImage(promptObj)}>View Image</button>
+              <button onClick={() => handleDeletePrompt(promptObj._id)}>Delete 🗑️</button>
+              <button onClick={() => handleViewImage(promptObj)}>View Image 👁️</button>
             </article>
           ))}
         </div>
       </section>
-
-      {imageUrl && (
-        <section>
-          <h2>Latest Masterpiece:</h2>
-          <img src={imageUrl} alt="Generated" />
-        </section>
-      )}
+    </section>
     </>
   );
 }

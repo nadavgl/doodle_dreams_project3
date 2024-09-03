@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 
 import Header from './components/Header'
 import Protect from './components/Protect'
+import Footer from './components/Footer.jsx'
 
 import HomePage from './pages/HomePage'
 import AuthForm from './pages/AuthForm'
@@ -21,7 +22,7 @@ function App() {
       )}
 
       <Header />
-
+      <main>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={(
@@ -35,6 +36,9 @@ function App() {
           </Protect>
         )} />
       </Routes>
+      </main>
+
+      <Footer />
     </>
   )
 }
