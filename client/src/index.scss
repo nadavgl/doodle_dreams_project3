@@ -1,10 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Chelsea+Market&display=swap');
+
+
 $green: #3fbd75;
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: "Chelsea Market", system-ui;
+  font-weight: 400;
+  // font-style: normal;
+  // font-family: sans-serif;
 }
 
 html,
@@ -204,3 +210,13 @@ section.prompt-container {
     }
   }
 }
+
+// @media (prefers-color-scheme: dark) {
+//   :root {
+//     color-scheme: light;
+//   }
+//   body {
+//     background-color: #fff;
+//     color: #333;
+//   }
+// }

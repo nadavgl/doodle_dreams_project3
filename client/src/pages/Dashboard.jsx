@@ -14,8 +14,8 @@ const initialFormData = {
 };
 
 const choices = {
-  animal_1: ['🐢 Turtle', '🐒 Monkey', '🐶 Dog', '🐱 Cat', '🐸 Frog', '🐻 Bear', '🐅 Tiger', '🐟 Fish'],
-  animal_2: ['🦁 Lion', '🐅 Tiger', '🐻 Bear', '🦅 Eagle', '🦔 Porcupine', '🦝 Raccoon', '🐊 Alligator', '🦩 Ostrich'],
+  animal_1: ['🐢 Turtle', '🐒 Monkey', '🐶 Dog', '🐱 Cat', '🐸 Frog', '🐻 Bear', '🐅 Tiger', '🐧 Penguin', '🦉Owl', '🦊Fox'],
+  animal_2: ['🦁 Lion', '🐅 Tiger', '🐻 Bear', '🦅 Eagle', '🦔 Porcupine', '🦝 Raccoon', '🐊 Alligator', '🦩 Ostrich', '🐇 Rabbit'],
   activity: ['🎨 Painting', '🗿 Sculpting', '✍ Writing', '💃 Dancing', '📚 Reading', '🐾 Frolicking', '🏀 Playing basketball', '🥾 Hiking'],
   location: ['🏢 Studio', '🌳 Forest', '🏖 Beach', '🏔 Mountain', '🌵 Desert', '🌿 Grass', '🛖 Swamp'],
   weather: ['☀️ Sunny', '🌧 Rainy', '❄️ Snowy', '☁️ Cloudy']
@@ -49,11 +49,19 @@ function Dashboard() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
+    // // Validate form fields
+    // const isFormValid = Object.values(formData).every(value => value !== '');
+  
+    // if (!isFormValid) {
+    //   alert('Please fill out all fields before submitting the form.');
+    //   return;
+    // }
+  
     try {
       const promptText = createPrompt();
       const imageResponse = await generateImage({ variables: { prompt: promptText } });
-
+  
       await setFormData({
         ...formData,
         imageUrl: imageResponse.data.generateImage.imageUrl,
@@ -63,6 +71,7 @@ function Dashboard() {
       console.error('Error adding prompt or generating image:', error);
     }
   };
+  
 
   const handleViewImage = (promptObj) => {
     setImageUrl(promptObj.imageUrl);
@@ -102,7 +111,7 @@ function Dashboard() {
       <form onSubmit={handleSubmit} className="column">
         <h2 className="text-center">Create Image</h2>
 
-        <label htmlFor="animal_1">Select Animal</label>
+        <label htmlFor="animal_1">Select Animal:</label>
         <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
           <option value="">Select an option</option>
           {choices.animal_1.map((choice) => (
@@ -152,7 +161,7 @@ function Dashboard() {
           ))}
         </select>
 
-        <button type="submit">Add</button>
+        <button type="submit">Add 🎨</button>
       </form>
 
 
@@ -169,19 +178,19 @@ function Dashboard() {
               <p>Activity: {promptObj.activity}</p>
               <p>Location: {promptObj.location}</p>
               <p>Weather: {promptObj.weather}</p>
-              <button onClick={() => handleDeletePrompt(promptObj._id)}>Delete</button>
-              <button onClick={() => handleViewImage(promptObj)}>View Image</button>
+              <button onClick={() => handleDeletePrompt(promptObj._id)}>Delete 🗑</button>
+              <button onClick={() => handleViewImage(promptObj)}>View Image 👁️</button>
             </article>
           ))}
         </div>
       </section>
-
+{/* 
       {imageUrl && (
         <section>
           <h2>Latest Masterpiece:</h2>
           <img src={imageUrl} alt="Generated" />
         </section>
-      )}
+      )} */}
     </>
   );
 }
