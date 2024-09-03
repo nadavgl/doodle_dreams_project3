@@ -26,6 +26,10 @@ const typeDefs = gql`
     user: User
   }
 
+  type ImageResponse {
+    imageUrl: String
+  }
+
   type Query {
     getUser: AuthResponse
     getUserPrompts: [Prompt]
@@ -41,6 +45,9 @@ const typeDefs = gql`
     # Prompt Mutations
     addPrompt(Animal_1: String, Animal_2: String, Activity: String, Location: String, Weather: String): Prompt
     deletePrompt(prompt_id: ID): Response
+
+    # DALL-E Image Generation Mutation
+    generateImage(prompt: String!): ImageResponse
   }
 `;
 

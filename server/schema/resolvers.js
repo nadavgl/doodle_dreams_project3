@@ -1,7 +1,8 @@
 const { User, Prompt } = require('../models');
 const { sign } = require('jsonwebtoken');
-
 const { GraphQLError } = require('graphql');
+const axios = require('axios');
+
 
 function createToken(user_id) {
   const token = sign({ user_id: user_id }, process.env.JWT_SECRET);
@@ -158,6 +159,34 @@ const resolvers = {
 
       return {
         message: 'Prompt deleted successfully'
+      }
+    },
+    async generateImage(_, { prompt }, context) {
+      if (!context.user_id) {
+        throw new GraphQLError('You are not authorized to perform that action');
+      }
+
+      try {
+        const response = await axios.post(
+          'https://api.openai.com/v1/images/generations',
+          {
+            prompt: prompt,
+            n: 1,
+            size: '1024x1024',
+          },
+          {
+            headers: {
+              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        const imageUrl = response.data.data[0].url;
+        return { imageUrl };
+      } catch (error) {
+        console.error('Error generating image:', error.response.data);
+        throw new GraphQLError('Failed to generate image');
       }
     }
   }
