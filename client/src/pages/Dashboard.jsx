@@ -14,12 +14,14 @@ const initialFormData = {
 };
 
 const choices = {
-  animal_1: ['Turtle', 'Monkey', 'Dog', 'Cat', 'Frog', 'Bear', 'Tiger', 'Fish'],
-  animal_2: ['Lion', 'Tiger', 'Bear', 'Eagle', 'Porcupine', 'Racoon', 'Alligator', 'Ostrich'],
-  activity: ['Painting', 'Sculpting', 'Writing', 'Dancing', 'Reading'],
-  location: ['Studio', 'Forest', 'Beach', 'Mountain'],
-  weather: ['Sunny', 'Rainy', 'Snowy', 'Cloudy']
+  animal_1: ['🐢 Turtle', '🐒 Monkey', '🐶 Dog', '🐱 Cat', '🐸 Frog', '🐻 Bear', '🐅 Tiger', '🐟 Fish'],
+  animal_2: ['🦁 Lion', '🐅 Tiger', '🐻 Bear', '🦅 Eagle', '🦔 Porcupine', '🦝 Raccoon', '🐊 Alligator', '🦩 Ostrich'],
+  activity: ['🎨 Painting', '🗿 Sculpting', '✍ Writing', '💃 Dancing', '📚 Reading', '🐾 Frolicking', '🏀 Playing basketball', '🥾 Hiking'],
+  location: ['🏢 Studio', '🌳 Forest', '🏖 Beach', '🏔 Mountain', '🌵 Desert', '🌿 Grass', '🛖 Swamp'],
+  weather: ['☀️ Sunny', '🌧 Rainy', '❄️ Snowy', '☁️ Cloudy']
 };
+
+
 
 function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -162,7 +164,7 @@ function Dashboard() {
         <div className="prompt-output">
           {promptData?.getUserPrompts.map((promptObj) => (
             <article key={promptObj._id}>
-              <p>Animal 1: {promptObj.animal_1}</p>
+              <p>Animal: {promptObj.animal_1}</p>
               <p>Friend: {promptObj.animal_2}</p>
               <p>Activity: {promptObj.activity}</p>
               <p>Location: {promptObj.location}</p>
