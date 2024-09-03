@@ -15,8 +15,7 @@
 For out final project, we decided to come together to create a React + Vite site that allows users to register and generate images. These images are created through FAL AI API.
 This application is meant to be a form of entertainment for young children to allow them to create images using AI art.
 
-We ensure a kid-friendly environment with our preselected options so prompts cannot be manipulated in any way.
-
+We ensure a kid-friendly environment with our preselected options so prompts cannot be manipulated in any way. And here are the 5 values:
 
 Parameters:
 
@@ -25,9 +24,6 @@ Animal 2,
 The Activity they'll be doing,
 The setting,
 The Weather
-
-
-
 
    ## Installation
     1. Clone the repository:
