@@ -62,10 +62,6 @@ async function startServer() {
     app.listen(PORT, () => {
       console.log('Express server running on port', PORT);
       console.log('GraphQL ready at /graphql');
-      console.log('JWT Secret:', process.env.JWT_SECRET);
-      console.log('FAL API Key:', process.env.FAL_KEY);
-
-
     });
   });
 }
