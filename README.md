@@ -1,7 +1,7 @@
 # doodle_dreams_project3
 
 # Table of Contents:
-:
+
   - [Description](#description)
   - [Installation](#installation)
   - [Technology Used](#technology-used)
