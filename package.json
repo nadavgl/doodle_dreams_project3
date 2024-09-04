@@ -9,7 +9,7 @@
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "build": "cd ./client && npm run build",
     "deploy": "npm run build && git add -A && git commit -m \"ready for deploy\" && git push example HEAD:main",
-    "install": "cd ./server && npm i",
+    "install": "cd server && npm i && cd ../client && npm i --production=false",
     "start": "cd ./server && npm start",
     "render-build":"npm install && npm run build"
   },
