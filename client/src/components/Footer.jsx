@@ -1,17 +1,19 @@
 const footerStyles = {
-    backgroundColor: '#ccc',
-    padding: '50px',
-    color: '#555'
+    backgroundColor: 'purple',
+    padding: '30px',
+    color: 'white',
 }
 
-function Footer (){
+function Footer() {
     return (
         <footer style={footerStyles} className="Footer">
-            <p >&copy; Copyright by DoodleDreams</p>
-           
+            <div className="content has-text-centered">
+                <p>&copy; Copyright by DoodleDreams</p>
+            </div>
+
         </footer>
 
     )
-  }
+}
 
-  export default Footer;
+export default Footer;

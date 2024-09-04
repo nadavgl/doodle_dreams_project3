@@ -6,6 +6,7 @@ import { LOGIN_USER, REGISTER_USER } from '../graphql/mutations'
 
 import { useStore } from '../store'
 
+
 const initialFormData = {
   username: '',
   email: '',
@@ -76,6 +77,7 @@ function AuthForm() {
 
   return (
     <>
+    <main>
       <form onSubmit={handleSubmit} className="column">
         <h2 className="text-center">{formData.isLogin ? 'Log In' : 'Register'}</h2>
 
@@ -93,6 +95,7 @@ function AuthForm() {
           <p className="text-center">Already Registered? <span onClick={() => toggleAuthState(true)}>Click Here</span></p>
         )}
       </form>
+    </main>
     </>
   )
 }
