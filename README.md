@@ -64,4 +64,4 @@ The Weather
     Open a pull request.
 
    ## License
-  
+  MIT License
