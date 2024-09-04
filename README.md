@@ -56,6 +56,12 @@ The Weather
    The artwork will be saved in some cards below where they see the prompt and an option to view the saved image again or delete the prompt.
 
    ## Contributing:
+   Anyone is allowed to add any changes just as long as these steps are followed:
+    Fork the repository.
+    Create a new branch (`git checkout -b new-branch`).
+    Make your changes and commit them. (`git commit -m 'Neww Adjustments'`).
+    Push to your branch (`git push origin new-branch`).
+    Open a pull request.
 
    ## License
   
