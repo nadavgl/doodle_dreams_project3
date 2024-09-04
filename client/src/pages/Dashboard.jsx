@@ -97,7 +97,8 @@ function Dashboard() {
 
   return (
     <>
-      <ImageModal 
+    <div className="dash">
+      <ImageModal
         initialFormData={initialFormData} 
         setFormData={setFormData} 
         handleSubmit={handleSubmit} 
@@ -106,9 +107,10 @@ function Dashboard() {
         formData={formData}
         imageUrl={imageUrl}
         isNewImage={isNewImage}  // Pass the state to ImageModal
-      />
+    />
+    
       
-      <form onSubmit={handleSubmit} className="column">
+      <form className="form-pic column" onSubmit={handleSubmit} >
         <h2 className="text-center">Create Image</h2>
 
         <label htmlFor="animal_1">Select Animal:</label>
@@ -166,20 +168,20 @@ function Dashboard() {
 
 
       <section className="prompt-container">
-        <h1>Your Doodles:</h1>
+        <h1 className="doodstyle">Your Doodles:</h1>
 
         {!promptData?.getUserPrompts.length && <h2>No prompts have been added.</h2>}
 
         <div className="prompt-output">
           {promptData?.getUserPrompts.map((promptObj) => (
-            <article key={promptObj._id}>
+            <article className="prompt-bg has-text-centered" key={promptObj._id}>
               <p>Animal: {promptObj.animal_1}</p>
               <p>Friend: {promptObj.animal_2}</p>
               <p>Activity: {promptObj.activity}</p>
               <p>Location: {promptObj.location}</p>
               <p>Weather: {promptObj.weather}</p>
               <button onClick={() => handleDeletePrompt(promptObj._id)}>Delete 🗑</button>
-              <button onClick={() => handleViewImage(promptObj)}>View Image 👁️</button>
+              <button className="viewImg" onClick={() => handleViewImage(promptObj)}>View Image 👁️</button>
             </article>
           ))}
         </div>
@@ -191,8 +193,9 @@ function Dashboard() {
           <img src={imageUrl} alt="Generated" />
         </section>
       )} */}
+      </div>
     </>
   );
 }
 
-export default Dashboard;
+export default Dashboard
