@@ -76,7 +76,7 @@ The Weather
 
    npm run dev in parent directory
 
-   ## Useage
+   ## Usage
 
    Users will be brought to the homepage where they will be able to register or login.
 
@@ -84,6 +84,10 @@ The Weather
    From there once they filled out the following, they will press the generate image button and see the artwork. If they don't like the result, there is a regenerate button.
 
    The artwork will be saved in some cards below where they see the prompt and an option to view the saved image again or delete the prompt.
+
+   ![Screenshot](./client/public/images/ss1.PNG)
+   ![Screenshot](./client/public/images/ss2.PNG)
+
 
    ## Contributing:
    Anyone is allowed to add any changes just as long as these steps are followed:
