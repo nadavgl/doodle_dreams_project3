@@ -181,7 +181,7 @@ function Dashboard() {
               <p>Location: {promptObj.location}</p>
               <p>Weather: {promptObj.weather}</p>
               <button onClick={() => handleDeletePrompt(promptObj._id)}>Delete 🗑</button>
-              <button onClick={() => handleViewImage(promptObj)}>View Image 👁️</button>
+              <button className="viewImg" onClick={() => handleViewImage(promptObj)}>View Image 👁️</button>
             </article>
           ))}
         </div>

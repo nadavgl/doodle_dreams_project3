@@ -29,7 +29,7 @@ function ImageModal(props) {
           <img src={props.imageUrl} alt="Generated image" />
         </p>
         {props.isNewImage && (  // Conditionally render buttons based on isNewImage
-          <div className="is-flex-direction-row mt-3">
+          <div className="is-flex-direction-row mt-3 ">
             <button onClick={props.handleSubmit} className="button is-warning mr-3">Regenerate</button>
             <button onClick={saveGeneration} className="button is-primary">Save</button>
           </div>
