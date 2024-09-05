@@ -69,42 +69,35 @@ function Dashboard() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validate form fields
-
     if (spellingMode) {
       // Extract animal names without emojis
       const animal1Name = formData.animal_1.replace(/[^a-zA-Z]/g, '').toLowerCase().trim();
       const animal2Name = formData.animal_2.replace(/[^a-zA-Z]/g, '').toLowerCase().trim();
-  
+
       // Compare with user spelling input
       if (formData.animal_1_spelling.toLowerCase().trim() !== animal1Name ||
-          formData.animal_2_spelling.toLowerCase().trim() !== animal2Name) {
+        formData.animal_2_spelling.toLowerCase().trim() !== animal2Name) {
         alert("Spelling is incorrect. Please spell the animals correctly.");
         return;
       }
     }
 
-    // // Validate form fields
-    // const isFormValid = Object.values(formData).every(value => value !== '');
-
-    // if (!isFormValid) {
-    //   alert('Please fill out all fields before submitting the form.');
-    //   return;
-    // }
-
     try {
       const promptText = createPrompt();
       const imageResponse = await generateImage({ variables: { prompt: promptText } });
 
-      await setFormData({
+      // Update the image URL after generation
+      setFormData({
         ...formData,
         imageUrl: imageResponse.data.generateImage.imageUrl,
       });
+
       setModalOpen(true);
     } catch (error) {
       console.error('Error adding prompt or generating image:', error);
     }
   };
+
 
 
   const handleViewImage = (promptObj) => {
@@ -131,121 +124,121 @@ function Dashboard() {
 
   return (
     <>
-    <div className="dash">
-      <ImageModal
-        initialFormData={initialFormData} 
-        setFormData={setFormData} 
-        handleSubmit={handleSubmit} 
-        modalOpen={modalOpen} 
-        setModalOpen={setModalOpen} 
-        formData={formData}
-        imageUrl={imageUrl}
-        isNewImage={isNewImage}
-    />
+      <div className="dash">
+        <ImageModal
+          initialFormData={initialFormData}
+          setFormData={setFormData}
+          handleSubmit={handleSubmit}
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          formData={formData}
+          imageUrl={imageUrl}
+          isNewImage={isNewImage}
+        />
 
-      <button onClick={toggleSpellingMode} className="button is-info">
-        {spellingMode ? 'Disable Spelling Mode' : 'Enable Spelling Mode'}
-      </button>
+        <button onClick={toggleSpellingMode} className="button is-info">
+          {spellingMode ? 'Disable Spelling Mode' : 'Enable Spelling Mode'}
+        </button>
 
-      <form className="form-pic column" onSubmit={handleSubmit}>
-        <h2 className="text-center">Create Image</h2>
+        <form className="form-pic column" onSubmit={handleSubmit}>
+          <h2 className="text-center">Create Image</h2>
 
-        {spellingMode ? (
-          <>
-            <label htmlFor="animal_1_spelling">Pick Animal and Spell it:</label>
-            <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
-              <option value="">Select an option</option>
-              {choices.animal_1.map((choice) => (
-                <option key={choice} value={choice}>
-                  {choice}
-                </option>
-              ))}
-            </select>
-            <input
-              type="text"
-              name="animal_1_spelling"
-              placeholder="Spell the animal"
-              value={formData.animal_1_spelling}
-              onChange={handleInputChange}
-            />
+          {spellingMode ? (
+            <>
+              <label htmlFor="animal_1">Pick Animal and Spell it:</label>
+              <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
+                <option value="">Select an option</option>
+                {choices.animal_1.map((choice) => (
+                  <option key={choice} value={choice}>
+                    {choice.replace(/[^🐢🐒🐶🐱🐸🐻🐅🐧🦉🦊]/g, '')}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="text"
+                name="animal_1_spelling"
+                placeholder="Spell the animal"
+                value={formData.animal_1_spelling}
+                onChange={handleInputChange}
+              />
 
-            <label htmlFor="animal_2_spelling">Pick Friend and Spell it:</label>
-            <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
-              <option value="">Select an option</option>
-              {choices.animal_2.map((choice) => (
-                <option key={choice} value={choice}>
-                  {choice}
-                </option>
-              ))}
-            </select>
-            <input
-              type="text"
-              name="animal_2_spelling"
-              placeholder="Spell the friend"
-              value={formData.animal_2_spelling}
-              onChange={handleInputChange}
-            />
-          </>
-        ) : (
-          <>
-            <label htmlFor="animal_1">Select Animal:</label>
-            <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
-              <option value="">Select an option</option>
-              {choices.animal_1.map((choice) => (
-                <option key={choice} value={choice}>
-                  {choice}
-                </option>
-              ))}
-            </select>
+              <label htmlFor="animal_2">Pick Friend and Spell it:</label>
+              <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
+                <option value="">Select an option</option>
+                {choices.animal_2.map((choice) => (
+                  <option key={choice} value={choice}>
+                    {choice.replace(/[^🦁🐅🐻🦅🦔🦝🐊🦩🐇]/g, '')}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="text"
+                name="animal_2_spelling"
+                placeholder="Spell the friend"
+                value={formData.animal_2_spelling}
+                onChange={handleInputChange}
+              />
+            </>
+          ) : (
+            <>
+              <label htmlFor="animal_1">Select Animal:</label>
+              <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
+                <option value="">Select an option</option>
+                {choices.animal_1.map((choice) => (
+                  <option key={choice} value={choice}>
+                    {choice}
+                  </option>
+                ))}
+              </select>
 
-            <label htmlFor="animal_2">Select Friend:</label>
-            <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
-              <option value="">Select an option</option>
-              {choices.animal_2.map((choice) => (
-                <option key={choice} value={choice}>
-                  {choice}
-                </option>
-              ))}
-            </select>
-          </>
-        )}
+              <label htmlFor="animal_2">Select Friend:</label>
+              <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
+                <option value="">Select an option</option>
+                {choices.animal_2.map((choice) => (
+                  <option key={choice} value={choice}>
+                    {choice}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
 
-        <label htmlFor="activity">Select Activity:</label>
-        <select name="activity" value={formData.activity} onChange={handleInputChange}>
-          <option value="">Select an option</option>
-          {choices.activity.map((choice) => (
-            <option key={choice} value={choice}>
-              {choice}
-            </option>
-          ))}
-        </select>
+          <label htmlFor="activity">Select Activity:</label>
+          <select name="activity" value={formData.activity} onChange={handleInputChange}>
+            <option value="">Select an option</option>
+            {choices.activity.map((choice) => (
+              <option key={choice} value={choice}>
+                {choice}
+              </option>
+            ))}
+          </select>
 
-        <label htmlFor="location">Select Location:</label>
-        <select name="location" value={formData.location} onChange={handleInputChange}>
-          <option value="">Select an option</option>
-          {choices.location.map((choice) => (
-            <option key={choice} value={choice}>
-              {choice}
-            </option>
-          ))}
-        </select>
+          <label htmlFor="location">Select Location:</label>
+          <select name="location" value={formData.location} onChange={handleInputChange}>
+            <option value="">Select an option</option>
+            {choices.location.map((choice) => (
+              <option key={choice} value={choice}>
+                {choice}
+              </option>
+            ))}
+          </select>
 
-        <label htmlFor="weather">Select Weather:</label>
-        <select name="weather" value={formData.weather} onChange={handleInputChange}>
-          <option value="">Select an option</option>
-          {choices.weather.map((choice) => (
-            <option key={choice} value={choice}>
-              {choice}
-            </option>
-          ))}
-        </select>
+          <label htmlFor="weather">Select Weather:</label>
+          <select name="weather" value={formData.weather} onChange={handleInputChange}>
+            <option value="">Select an option</option>
+            {choices.weather.map((choice) => (
+              <option key={choice} value={choice}>
+                {choice}
+              </option>
+            ))}
+          </select>
 
-        <button type="button" onClick={generateRandomFormData}>
+          <button type="button" onClick={generateRandomFormData}>
             Randomize 🌀
           </button>
 
-        <button type="submit">Add 🎨</button>
-      </form>
+          <button type="submit">Add 🎨</button>
+        </form>
 
 
         <section className="prompt-container">
