@@ -40,6 +40,18 @@ function Dashboard() {
   });
   const { data: promptData } = useQuery(GET_USER_PROMPTS);
 
+  const generateRandomFormData = () => {
+    const randomValue = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    setFormData({
+      animal_1: randomValue(choices.animal_1),
+      animal_2: randomValue(choices.animal_2),
+      activity: randomValue(choices.activity),
+      location: randomValue(choices.location),
+      weather: randomValue(choices.weather),
+      imageUrl: ''
+    });
+  };
+
   const handleInputChange = (event) => {
     setFormData({
       ...formData,
@@ -162,6 +174,10 @@ function Dashboard() {
             </option>
           ))}
         </select>
+
+        <button type="button" onClick={generateRandomFormData}>
+            Randomize 🌀
+          </button>
 
         <button type="submit">Add 🎨</button>
       </form>
