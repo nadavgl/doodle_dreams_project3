@@ -145,7 +145,7 @@ function Dashboard() {
 
           {spellingMode ? (
             <>
-              <label htmlFor="animal_1">Pick Animal and Spell it:</label>
+              <label htmlFor="animal_1">Select Animal and Spell it:</label>
               <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
                 <option value="">Select an option</option>
                 {choices.animal_1.map((choice) => (
@@ -162,7 +162,7 @@ function Dashboard() {
                 onChange={handleInputChange}
               />
 
-              <label htmlFor="animal_2">Pick Friend and Spell it:</label>
+              <label htmlFor="animal_2">Select Friend and Spell it:</label>
               <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
                 <option value="">Select an option</option>
                 {choices.animal_2.map((choice) => (
