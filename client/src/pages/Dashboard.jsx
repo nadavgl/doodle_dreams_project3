@@ -28,6 +28,8 @@ function Dashboard() {
   const [isNewImage, setIsNewImage] = useState(false); // New state to track if the image is newly generated
   const [formData, setFormData] = useState(initialFormData);
   const [imageUrl, setImageUrl] = useState('');
+  const [spellingMode, setSpellingMode] = useState(false); // New state for Spelling mode
+
 
   const [deletePrompt] = useMutation(DELETE_PROMPT, {
     refetchQueries: [GET_USER_PROMPTS, GET_ALL_PROMPTS]
@@ -59,21 +61,41 @@ function Dashboard() {
     });
   };
 
+  const toggleSpellingMode = () => {
+    setSpellingMode(!spellingMode);
+    setFormData(initialFormData); // Reset form when toggling mode
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Validate form fields
+
+    if (spellingMode) {
+      // Extract animal names without emojis
+      const animal1Name = formData.animal_1.replace(/[^a-zA-Z]/g, '').toLowerCase().trim();
+      const animal2Name = formData.animal_2.replace(/[^a-zA-Z]/g, '').toLowerCase().trim();
   
+      // Compare with user spelling input
+      if (formData.animal_1_spelling.toLowerCase().trim() !== animal1Name ||
+          formData.animal_2_spelling.toLowerCase().trim() !== animal2Name) {
+        alert("Spelling is incorrect. Please spell the animals correctly.");
+        return;
+      }
+    }
+
     // // Validate form fields
     // const isFormValid = Object.values(formData).every(value => value !== '');
-  
+
     // if (!isFormValid) {
     //   alert('Please fill out all fields before submitting the form.');
     //   return;
     // }
-  
+
     try {
       const promptText = createPrompt();
       const imageResponse = await generateImage({ variables: { prompt: promptText } });
-  
+
       await setFormData({
         ...formData,
         imageUrl: imageResponse.data.generateImage.imageUrl,
@@ -83,7 +105,7 @@ function Dashboard() {
       console.error('Error adding prompt or generating image:', error);
     }
   };
-  
+
 
   const handleViewImage = (promptObj) => {
     setImageUrl(promptObj.imageUrl);
@@ -118,32 +140,75 @@ function Dashboard() {
         setModalOpen={setModalOpen} 
         formData={formData}
         imageUrl={imageUrl}
-        isNewImage={isNewImage}  // Pass the state to ImageModal
+        isNewImage={isNewImage}
     />
-    
-      
-      <form className="form-pic column" onSubmit={handleSubmit} >
+
+      <button onClick={toggleSpellingMode} className="button is-info">
+        {spellingMode ? 'Disable Spelling Mode' : 'Enable Spelling Mode'}
+      </button>
+
+      <form className="form-pic column" onSubmit={handleSubmit}>
         <h2 className="text-center">Create Image</h2>
 
-        <label htmlFor="animal_1">Select Animal:</label>
-        <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
-          <option value="">Select an option</option>
-          {choices.animal_1.map((choice) => (
-            <option key={choice} value={choice}>
-              {choice}
-            </option>
-          ))}
-        </select>
+        {spellingMode ? (
+          <>
+            <label htmlFor="animal_1_spelling">Pick Animal and Spell it:</label>
+            <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
+              <option value="">Select an option</option>
+              {choices.animal_1.map((choice) => (
+                <option key={choice} value={choice}>
+                  {choice}
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              name="animal_1_spelling"
+              placeholder="Spell the animal"
+              value={formData.animal_1_spelling}
+              onChange={handleInputChange}
+            />
 
-        <label htmlFor="animal_2">Select Friend:</label>
-        <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
-          <option value="">Select an option</option>
-          {choices.animal_2.map((choice) => (
-            <option key={choice} value={choice}>
-              {choice}
-            </option>
-          ))}
-        </select>
+            <label htmlFor="animal_2_spelling">Pick Friend and Spell it:</label>
+            <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
+              <option value="">Select an option</option>
+              {choices.animal_2.map((choice) => (
+                <option key={choice} value={choice}>
+                  {choice}
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              name="animal_2_spelling"
+              placeholder="Spell the friend"
+              value={formData.animal_2_spelling}
+              onChange={handleInputChange}
+            />
+          </>
+        ) : (
+          <>
+            <label htmlFor="animal_1">Select Animal:</label>
+            <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
+              <option value="">Select an option</option>
+              {choices.animal_1.map((choice) => (
+                <option key={choice} value={choice}>
+                  {choice}
+                </option>
+              ))}
+            </select>
+
+            <label htmlFor="animal_2">Select Friend:</label>
+            <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
+              <option value="">Select an option</option>
+              {choices.animal_2.map((choice) => (
+                <option key={choice} value={choice}>
+                  {choice}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
 
         <label htmlFor="activity">Select Activity:</label>
         <select name="activity" value={formData.activity} onChange={handleInputChange}>
@@ -183,26 +248,26 @@ function Dashboard() {
       </form>
 
 
-      <section className="prompt-container">
-        <h1 className="doodstyle">Your Doodles:</h1>
+        <section className="prompt-container">
+          <h1 className="doodstyle">Your Doodles:</h1>
 
-        {!promptData?.getUserPrompts.length && <h2>No prompts have been added.</h2>}
+          {!promptData?.getUserPrompts.length && <h2>No doodles have been added.</h2>}
 
-        <div className="prompt-output">
-          {promptData?.getUserPrompts.map((promptObj) => (
-            <article className="prompt-bg has-text-centered" key={promptObj._id}>
-              <p>Animal: {promptObj.animal_1}</p>
-              <p>Friend: {promptObj.animal_2}</p>
-              <p>Activity: {promptObj.activity}</p>
-              <p>Location: {promptObj.location}</p>
-              <p>Weather: {promptObj.weather}</p>
-              <button onClick={() => handleDeletePrompt(promptObj._id)}>Delete 🗑</button>
-              <button className="viewImg" onClick={() => handleViewImage(promptObj)}>View Image 👁️</button>
-            </article>
-          ))}
-        </div>
-      </section>
-{/* 
+          <div className="prompt-output">
+            {promptData?.getUserPrompts.map((promptObj) => (
+              <article className="prompt-bg has-text-centered" key={promptObj._id}>
+                <p>Animal: {promptObj.animal_1}</p>
+                <p>Friend: {promptObj.animal_2}</p>
+                <p>Activity: {promptObj.activity}</p>
+                <p>Location: {promptObj.location}</p>
+                <p>Weather: {promptObj.weather}</p>
+                <button onClick={() => handleDeletePrompt(promptObj._id)}>Delete 🗑</button>
+                <button className="viewImg" onClick={() => handleViewImage(promptObj)}>View Image 👁️</button>
+              </article>
+            ))}
+          </div>
+        </section>
+        {/* 
       {imageUrl && (
         <section>
           <h2>Latest Masterpiece:</h2>
