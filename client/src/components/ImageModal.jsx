@@ -10,12 +10,14 @@ function ImageModal(props) {
   const saveGeneration = async () => {
     await addPrompt({
       variables: {
-        ...props.formData,
+        ...props.formData,   // Existing form data
+        imageUrl: props.imageUrl  // Explicitly include the imageUrl
       }
     });
     props.setModalOpen(false);
-    props.setFormData(props.initialFormData);
+    props.setFormData(props.initialFormData);  // Reset the form data after saving
   };
+  
 
   function closeModal() {
     props.setModalOpen(false);

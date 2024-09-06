@@ -65,7 +65,6 @@ function Dashboard() {
     setSpellingMode(!spellingMode);
     setFormData(initialFormData); // Reset form when toggling mode
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -83,22 +82,22 @@ function Dashboard() {
     }
 
     try {
+      // Set the placeholder image first (frogeagle.jpeg)
+      setImageUrl('./images/painting.gif');  // Make sure to set the correct path to frogeagle.jpeg
+      setIsNewImage(true); // Ensure buttons appear for the new image
+      setModalOpen(true); // Open the modal immediately
+
       const promptText = createPrompt();
+
+      // Generate the actual image after setting the placeholder
       const imageResponse = await generateImage({ variables: { prompt: promptText } });
 
-      // Update the image URL after generation
-      setFormData({
-        ...formData,
-        imageUrl: imageResponse.data.generateImage.imageUrl,
-      });
-
-      setModalOpen(true);
+      // Replace the placeholder with the newly generated image URL
+      setImageUrl(imageResponse.data.generateImage.imageUrl);
     } catch (error) {
       console.error('Error adding prompt or generating image:', error);
     }
   };
-
-
 
   const handleViewImage = (promptObj) => {
     setImageUrl(promptObj.imageUrl);
