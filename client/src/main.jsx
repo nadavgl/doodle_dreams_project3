@@ -6,6 +6,9 @@ import { onError } from '@apollo/client/link/error'
 import 'bulma/css/bulma.min.css';
 
 import './index.scss'
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 
 import App from './App.jsx'
 import { StoreProvider } from './store/index.jsx'
