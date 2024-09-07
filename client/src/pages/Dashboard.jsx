@@ -23,12 +23,16 @@ const choices = {
   weather: ['☀️ Sunny', '🌧 Rainy', '❄️ Snowy', '☁️ Cloudy']
 };
 
+
+
 function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [isNewImage, setIsNewImage] = useState(false); // New state to track if the image is newly generated
   const [formData, setFormData] = useState(initialFormData);
   const [imageUrl, setImageUrl] = useState('');
   const [spellingMode, setSpellingMode] = useState(false); // New state for Spelling mode
+
+
 
   const [deletePrompt] = useMutation(DELETE_PROMPT, {
     refetchQueries: [GET_USER_PROMPTS, GET_ALL_PROMPTS]
@@ -64,19 +68,34 @@ function Dashboard() {
     setSpellingMode(!spellingMode);
     setFormData(initialFormData); // Reset form when toggling mode
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (spellingMode) {
+      // Extract animal names without emojis
+      const animal1Name = formData.animal_1.replace(/[^a-zA-Z]/g, '').toLowerCase().trim();
+      const animal2Name = formData.animal_2.replace(/[^a-zA-Z]/g, '').toLowerCase().trim();
+
+      // Compare with user spelling input
+      if (formData.animal_1_spelling.toLowerCase().trim() !== animal1Name ||
+        formData.animal_2_spelling.toLowerCase().trim() !== animal2Name) {
+        alert("Spelling is incorrect. Please spell the animals correctly.");
+        return;
+      }
+    }
+
     try {
-      // Set the placeholder image first
-      setImageUrl('./images/painting.gif');
+      // Set the placeholder image first (painting.gif)
+      setImageUrl('./images/painting.gif');  // Make sure to set the correct path to painting.gif
       setIsNewImage(true); // Ensure buttons appear for the new image
       setModalOpen(true); // Open the modal immediately
 
       const promptText = createPrompt();
+
+      // Generate the actual image after setting the placeholder
       const imageResponse = await generateImage({ variables: { prompt: promptText } });
 
-      // Replace the placeholder with the generated image URL
+      // Replace the placeholder with the newly generated image URL
       setImageUrl(imageResponse.data.generateImage.imageUrl);
     } catch (error) {
       console.error('Error adding prompt or generating image:', error);
@@ -105,10 +124,9 @@ function Dashboard() {
     return `A scene with a ${formData.animal_1} and a ${formData.animal_2} doing ${formData.activity} in a ${formData.location} with ${formData.weather} weather. Make the image kid friendly.`;
   };
 
-  // Slider settings for Slick carousel
   const sliderSettings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -118,7 +136,7 @@ function Dashboard() {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          infinite: true,
+          infinite: false,
           dots: true
         }
       },
@@ -152,16 +170,111 @@ function Dashboard() {
 
         <form className="form-pic column" onSubmit={handleSubmit}>
           <h2 className="text-center">Create Image</h2>
-          {/* Form fields go here */}
+
+          {spellingMode ? (
+            <>
+              <label htmlFor="animal_1">Select Animal and Spell it:</label>
+              <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
+                <option value="">Select an option</option>
+                {choices.animal_1.map((choice) => (
+                  <option key={choice} value={choice}>
+                    {choice.replace(/[^🐢🐒🐶🐱🐸🐻🐅🐧🦉🦊]/g, '')}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="text"
+                name="animal_1_spelling"
+                placeholder="Spell the animal"
+                value={formData.animal_1_spelling}
+                onChange={handleInputChange}
+              />
+
+              <label htmlFor="animal_2">Select Friend and Spell it:</label>
+              <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
+                <option value="">Select an option</option>
+                {choices.animal_2.map((choice) => (
+                  <option key={choice} value={choice}>
+                    {choice.replace(/[^🦁🐅🐻🦅🦔🦝🐊🦩🐇]/g, '')}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="text"
+                name="animal_2_spelling"
+                placeholder="Spell the friend"
+                value={formData.animal_2_spelling}
+                onChange={handleInputChange}
+              />
+            </>
+          ) : (
+            <>
+              <label htmlFor="animal_1">Select Animal:</label>
+              <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
+                <option value="">Select an option</option>
+                {choices.animal_1.map((choice) => (
+                  <option key={choice} value={choice}>
+                    {choice}
+                  </option>
+                ))}
+              </select>
+
+              <label htmlFor="animal_2">Select Friend:</label>
+              <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
+                <option value="">Select an option</option>
+                {choices.animal_2.map((choice) => (
+                  <option key={choice} value={choice}>
+                    {choice}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
+
+          <label htmlFor="activity">Select Activity:</label>
+          <select name="activity" value={formData.activity} onChange={handleInputChange}>
+            <option value="">Select an option</option>
+            {choices.activity.map((choice) => (
+              <option key={choice} value={choice}>
+                {choice}
+              </option>
+            ))}
+          </select>
+
+          <label htmlFor="location">Select Location:</label>
+          <select name="location" value={formData.location} onChange={handleInputChange}>
+            <option value="">Select an option</option>
+            {choices.location.map((choice) => (
+              <option key={choice} value={choice}>
+                {choice}
+              </option>
+            ))}
+          </select>
+
+          <label htmlFor="weather">Select Weather:</label>
+          <select name="weather" value={formData.weather} onChange={handleInputChange}>
+            <option value="">Select an option</option>
+            {choices.weather.map((choice) => (
+              <option key={choice} value={choice}>
+                {choice}
+              </option>
+            ))}
+          </select>
+
+          <button type="button" onClick={generateRandomFormData}>
+            Randomize 🌀
+          </button>
+
           <button type="submit">Add 🎨</button>
         </form>
+
 
         <section className="prompt-container">
           <h1 className="doodstyle">Your Doodles:</h1>
 
           {!promptData?.getUserPrompts.length && <h2>No doodles have been added.</h2>}
 
-          <Slider {...sliderSettings}>
+          <Slider {...sliderSettings} className='prompt-output'>
             {promptData?.getUserPrompts.map((promptObj) => (
               <div key={promptObj._id} className="carousel-item">
                 <article className="prompt-bg has-text-centered">
@@ -177,9 +290,16 @@ function Dashboard() {
             ))}
           </Slider>
         </section>
+        {/* 
+      {imageUrl && (
+        <section>
+          <h2>Latest Masterpiece:</h2>
+          <img src={imageUrl} alt="Generated" />
+        </section>
+      )} */}
       </div>
     </>
   );
 }
 
-export default Dashboard;
+export default Dashboard

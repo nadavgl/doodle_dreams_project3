@@ -66,9 +66,10 @@ footer {
 }
 
 .text-padding {
-  vertical-align: top; 
-    padding-top: 10px; 
+  vertical-align: top;
+  padding-top: 10px;
 }
+
 // CUSTOM STYLES
 .overlay {
   position: fixed;
@@ -221,8 +222,10 @@ form {
 }
 
 .git {
-  width: 25px; /* Set the width of the image to 200 pixels */
-  height: auto; /* Automatically adjust the height to maintain the aspect ratio */
+  width: 25px;
+  /* Set the width of the image to 200 pixels */
+  height: auto;
+  /* Automatically adjust the height to maintain the aspect ratio */
   margin-left: 10px;
 }
 
@@ -259,7 +262,7 @@ section.prompt-container {
     padding: 10px;
 
     .prompt-bg {
-      background-image: url(../public/images/canvas4.jpg);
+      background-image: url(../public/images/blankcanvaspaper.png);
       background-color: sandybrown;
       background-size: cover;
       background-position: cover;
@@ -295,6 +298,33 @@ section.prompt-container {
     }
   }
 }
+
+// // Base styles (for larger screens)
+// .slider {
+//   width: 100%;
+
+//   .slick-slide {
+//     padding: 0 10px; // Adjust padding as needed
+//   }
+// }
+
+// // Media queries for devices with smaller screens
+// @media only screen and (max-width: 768px) {
+//   .slider {
+//     .slick-slide {
+//       padding: 0 4px; // Adjust padding for smaller screens
+//     }
+//   }
+// }
+
+// @media only screen and (max-width: 480px) {
+//   .slider {
+//     .slick-slide {
+//       padding: 0; // Remove padding for very small screens
+//     }
+//   }
+// }
+
 
 // @media (prefers-color-scheme: dark) {
 //   :root {
