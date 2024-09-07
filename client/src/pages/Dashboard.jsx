@@ -274,9 +274,9 @@ function Dashboard() {
 
           {!promptData?.getUserPrompts.length && <h2>No doodles have been added.</h2>}
 
-          <Slider {...sliderSettings} className='prompt-output'>
+          <Slider {...sliderSettings}>
             {promptData?.getUserPrompts.map((promptObj) => (
-              <div key={promptObj._id} className="carousel-item">
+              <div key={promptObj._id} className="prompt-output">
                 <article className="prompt-bg has-text-centered">
                   <p>Animal: {promptObj.animal_1}</p>
                   <p>Friend: {promptObj.animal_2}</p>

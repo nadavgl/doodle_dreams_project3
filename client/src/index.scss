@@ -66,10 +66,9 @@ footer {
 }
 
 .text-padding {
-  vertical-align: top;
-  padding-top: 10px;
+  vertical-align: top; 
+    padding-top: 10px; 
 }
-
 // CUSTOM STYLES
 .overlay {
   position: fixed;
@@ -124,6 +123,7 @@ header {
       color: #555;
     }
   }
+  
 
   nav {
     a {
@@ -150,19 +150,19 @@ section.hero {
 }
 
 .form-pic {
-  background-image: url(../public/images/formbg.jpg);
+  background-image: url(../public/images/canvaspaint3.png);
   background-position: center;
-  background-size: 103%;
+  background-size: 133%;
   border: 1px solid #666;
   border-radius: 13px;
 
 }
 
-// .dash-bg {
-//   background-image: url(./images/bg.jpg);
-//   background-size: 100%;
-//   height: 100vh;
-// }
+.dash-bg {
+  background-image: url(./images/dash-bg.jpg);
+  background-size: 100%;
+  height: 100vh;
+}
 
 form {
   width: 400px;
@@ -178,6 +178,9 @@ form {
   }
 
   label {
+ 
+    background-color: rgba(234, 241, 234, 0.4); /* Adjust opacity as needed */
+    color: rgba(0, 0, 0, 0.877);
     padding-right: 2px;
     margin-left: 5px;
   }
@@ -222,10 +225,8 @@ form {
 }
 
 .git {
-  width: 25px;
-  /* Set the width of the image to 200 pixels */
-  height: auto;
-  /* Automatically adjust the height to maintain the aspect ratio */
+  width: 25px; /* Set the width of the image to 200 pixels */
+  height: auto; /* Automatically adjust the height to maintain the aspect ratio */
   margin-left: 10px;
 }
 
@@ -239,6 +240,8 @@ form {
 
 
 }
+
+
 
 section.prompt-container {
   padding: 25px 5%;
@@ -262,7 +265,7 @@ section.prompt-container {
     padding: 10px;
 
     .prompt-bg {
-      background-image: url(../public/images/blankcanvaspaper.png);
+      background-image: url(../public/images/canvas4.jpg);
       background-color: sandybrown;
       background-size: cover;
       background-position: cover;
@@ -299,31 +302,6 @@ section.prompt-container {
   }
 }
 
-// // Base styles (for larger screens)
-// .slider {
-//   width: 100%;
-
-//   .slick-slide {
-//     padding: 0 10px; // Adjust padding as needed
-//   }
-// }
-
-// // Media queries for devices with smaller screens
-// @media only screen and (max-width: 768px) {
-//   .slider {
-//     .slick-slide {
-//       padding: 0 4px; // Adjust padding for smaller screens
-//     }
-//   }
-// }
-
-// @media only screen and (max-width: 480px) {
-//   .slider {
-//     .slick-slide {
-//       padding: 0; // Remove padding for very small screens
-//     }
-//   }
-// }
 
 
 // @media (prefers-color-scheme: dark) {
