@@ -151,23 +151,42 @@ section.hero {
 }
 
 .form-pic {
-  background-image: url(../public/images/formbg.jpg);
+  position: relative;
+  background-image: url(../public/images/paintpattern.webp);
   background-position: center;
-  background-size: 103%;
+  background-size: 115%;
   border: 1px solid #666;
   border-radius: 13px;
 
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5); // Light overlay
+    border-radius: 13px;
+    z-index: 1; // Ensure the overlay is above the background image
+  }
+
+  // Adjust content styling so it is above the overlay
+  > * {
+    position: relative;
+    z-index: 2;
+  }
 }
+
 
 
 .dash-bg {
   background-image: url(./images/dash-bg.jpg);
   background-size: 100%;
   height: 100vh;
+
 }
 
 form {
-
   width: 400px;
   margin: 40px auto;
 
@@ -181,11 +200,16 @@ form {
   }
 
   label {
-
-    // background-color: rgba(234, 241, 234, 0.4); /* Adjust opacity as needed */
+    // background-color: rgba(255, 255, 255, 0.3); // Subtle background color for contrast
     color: rgba(0, 0, 0, 0.877);
     padding-right: 2px;
     margin-left: 5px;
+    padding: 2px 5px; // Add padding to ensure the text is readable
+    border-radius: 4px; // Rounded edges for a subtle look
+    display: inline; // Ensure label only takes up space of its content
+    width: auto; // Ensure width adjusts to content
+    font-weight: 100;
+
   }
 
   input:focus {
@@ -204,9 +228,10 @@ form {
     padding: 7px 0;
     font-size: 1rem;
 
-    // &:hover {
-    //   border: 2px solid black;
-    // }
+    &:hover {
+      outline: 1px solid #000;
+      outline-offset: 2px;
+    }
   }
 
   p {
@@ -222,6 +247,7 @@ form {
     }
   }
 }
+
 
 .viewImg {
   background-color: rgb(39, 106, 230) !important;
@@ -299,11 +325,46 @@ section.prompt-container {
         border-radius: 3px;
         margin-left: 10px;
 
-        // &:hover {
-        //   border: 2px solid #444;
-        // }
+        &:hover {
+          outline: 2px solid #000; // Add a thin black outline
+          outline-offset: 1px; // Optional: add some space between button and outline
+        }
       }
     }
+  }
+}
+
+/* Add this to the bottom of your SCSS file or in a suitable section */
+.green-button {
+  background: #28a745; // Green color
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  padding: 7px 0;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #218838; // Darker green for hover
+    outline: none; // Ensure no outline is added
+
+    // outline: 1px solid #000;
+    // outline-offset: 2px;
+  }
+}
+
+.purple-button {
+  background: $purple;
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  padding: 7px 0;
+  font-size: 1rem;
+
+  &:hover {
+    background: darken($purple, 10%); // Darken the background color on hover
+    color: #fff;
+    outline: none; // Ensure no outline is added
   }
 }
 

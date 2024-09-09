@@ -261,11 +261,11 @@ function Dashboard() {
             ))}
           </select>
 
-          <button type="button" onClick={generateRandomFormData}>
+          <button type="button" className='purple-button' onClick={generateRandomFormData}>
             Randomize 🌀
           </button>
 
-          <button type="submit">Add 🎨</button>
+          <button type="submit" className='green-button'>Add 🎨</button>
         </form>
 
 
