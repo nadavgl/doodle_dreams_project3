@@ -66,9 +66,10 @@ footer {
 }
 
 .text-padding {
-  vertical-align: top; 
-    padding-top: 10px; 
+  vertical-align: top;
+  padding-top: 10px;
 }
+
 // CUSTOM STYLES
 .overlay {
   position: fixed;
@@ -123,7 +124,7 @@ header {
       color: #555;
     }
   }
-  
+
 
   nav {
     a {
@@ -150,13 +151,14 @@ section.hero {
 }
 
 .form-pic {
-  background-image: url(../public/images/canvaspaint3.png);
+  background-image: url(../public/images/formbg.jpg);
   background-position: center;
-  background-size: 133%;
+  background-size: 103%;
   border: 1px solid #666;
   border-radius: 13px;
 
 }
+
 
 .dash-bg {
   background-image: url(./images/dash-bg.jpg);
@@ -165,6 +167,7 @@ section.hero {
 }
 
 form {
+
   width: 400px;
   margin: 40px auto;
 
@@ -178,8 +181,8 @@ form {
   }
 
   label {
- 
-    background-color: rgba(234, 241, 234, 0.4); /* Adjust opacity as needed */
+
+    // background-color: rgba(234, 241, 234, 0.4); /* Adjust opacity as needed */
     color: rgba(0, 0, 0, 0.877);
     padding-right: 2px;
     margin-left: 5px;
@@ -225,8 +228,10 @@ form {
 }
 
 .git {
-  width: 25px; /* Set the width of the image to 200 pixels */
-  height: auto; /* Automatically adjust the height to maintain the aspect ratio */
+  width: 25px;
+  /* Set the width of the image to 200 pixels */
+  height: auto;
+  /* Automatically adjust the height to maintain the aspect ratio */
   margin-left: 10px;
 }
 
