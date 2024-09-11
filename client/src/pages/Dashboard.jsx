@@ -173,8 +173,11 @@ function Dashboard() {
   };
 
   const customStyles = {
-    menuPortal: (provided) => ({ ...provided, zIndex: 9999 }), // Set a high z-index value
-  };
+    ///.....
+    menuPortal: provided => ({ ...provided, zIndex: 9999 }),
+    menu: provided => ({ ...provided, zIndex: 9999 })
+    ///.....
+  }
 
   return (
     <>
@@ -205,6 +208,9 @@ function Dashboard() {
                 value={formatChoicesForSelect(choices.animal_1).find(option => option.value === formData.animal_1)}
                 onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_1')}
                 isSearchable={false}
+                menuPortalTarget={document.body}
+                menuPosition={'fixed'} 
+                styles={customStyles}
               />
               <input
                 type="text"
@@ -213,6 +219,9 @@ function Dashboard() {
                 value={formData.animal_1_spelling}
                 onChange={(e) => setFormData({ ...formData, animal_1_spelling: e.target.value })}
                 isSearchable={false}
+                menuPortalTarget={document.body}
+                menuPosition={'fixed'} 
+                styles={customStyles}
               />
 
               <label htmlFor="animal_2">Select Friend and Spell it:</label>
@@ -221,6 +230,9 @@ function Dashboard() {
                 value={formatChoicesForSelect(choices.animal_2).find(option => option.value === formData.animal_2)}
                 onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_2')}
                 isSearchable={false}
+                menuPortalTarget={document.body}
+                menuPosition={'fixed'} 
+                styles={customStyles}
               />
               <input
                 type="text"
@@ -229,6 +241,9 @@ function Dashboard() {
                 value={formData.animal_2_spelling}
                 onChange={(e) => setFormData({ ...formData, animal_2_spelling: e.target.value })}
                 isSearchable={false}
+                menuPortalTarget={document.body}
+                menuPosition={'fixed'} 
+                styles={customStyles}
               />
             </>
           ) : (
@@ -239,6 +254,9 @@ function Dashboard() {
                 value={formatChoicesForSelect(choices.animal_1).find(option => option.value === formData.animal_1)}
                 onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_1')}
                 isSearchable={false}
+                menuPortalTarget={document.body}
+                menuPosition={'fixed'} 
+                styles={customStyles}
               />
 
               <label htmlFor="animal_2">Select Friend:</label>
@@ -247,6 +265,9 @@ function Dashboard() {
                 value={formatChoicesForSelect(choices.animal_2).find(option => option.value === formData.animal_2)}
                 onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_2')}
                 isSearchable={false}
+                menuPortalTarget={document.body}
+                menuPosition={'fixed'} 
+                styles={customStyles}
               />
             </>
           )}
@@ -257,6 +278,9 @@ function Dashboard() {
               value={formatChoicesForSelect(choices.activity).find(option => option.value === formData.activity)}
               onChange={(selectedOption) => handleSelectChange(selectedOption, 'activity')}
               isSearchable={false}
+              menuPortalTarget={document.body}
+              menuPosition={'fixed'} 
+              styles={customStyles}
             />
           </div>
 
@@ -267,6 +291,9 @@ function Dashboard() {
               value={formatChoicesForSelect(choices.location).find(option => option.value === formData.location)}
               onChange={(selectedOption) => handleSelectChange(selectedOption, 'location')}
               isSearchable={false}
+              menuPortalTarget={document.body}
+              menuPosition={'fixed'} 
+              styles={customStyles}
             />
           </div>
 
@@ -277,6 +304,9 @@ function Dashboard() {
               value={formatChoicesForSelect(choices.weather).find(option => option.value === formData.weather)}
               onChange={(selectedOption) => handleSelectChange(selectedOption, 'weather')}
               isSearchable={false}
+              menuPortalTarget={document.body}
+              menuPosition={'fixed'} 
+              styles={customStyles}
             />
           </div>
 
