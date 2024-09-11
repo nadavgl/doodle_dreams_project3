@@ -15,8 +15,8 @@ const initialFormData = {
   location: '',
   weather: '',
   imageUrl: '',
-  animal_1_spelling: '',  // Add this
-  animal_2_spelling: ''   // Add this
+  animal_1_spelling: { value: '', label: '' }, // Change to object
+  animal_2_spelling: { value: '', label: '' }, // Change to object
 };
 
 const choices = {
@@ -27,12 +27,6 @@ const choices = {
   weather: ['☀️ Sunny', '🌧 Rainy', '❄️ Snowy', '☁️ Cloudy']
 };
 
-const formatChoicesForSelect = (choicesArray) => {
-  return choicesArray.map(choice => ({
-    value: choice,
-    label: choice
-  }));
-};
 
 
 function Dashboard() {
@@ -57,14 +51,20 @@ function Dashboard() {
 
   const generateRandomFormData = () => {
     const randomValue = (arr) => arr[Math.floor(Math.random() * arr.length)];
-    setFormData({
+
+    const newFormData = {
       animal_1: randomValue(choices.animal_1),
       animal_2: randomValue(choices.animal_2),
       activity: randomValue(choices.activity),
       location: randomValue(choices.location),
       weather: randomValue(choices.weather),
-      imageUrl: ''
-    });
+      imageUrl: '',
+      // Set spelling fields to empty objects in spelling mode
+      animal_1_spelling: spellingMode ? { value: '', label: '' } : initialFormData.animal_1_spelling,
+      animal_2_spelling: spellingMode ? { value: '', label: '' } : initialFormData.animal_2_spelling
+    };
+
+    setFormData(newFormData);
   };
 
   const handleInputChange = (event) => {
@@ -87,9 +87,9 @@ function Dashboard() {
       const animal1Name = formData.animal_1.replace(/[^a-zA-Z]/g, '').toLowerCase().trim();
       const animal2Name = formData.animal_2.replace(/[^a-zA-Z]/g, '').toLowerCase().trim();
 
-      // Compare with user spelling input
-      if (formData.animal_1_spelling.toLowerCase().trim() !== animal1Name ||
-        formData.animal_2_spelling.toLowerCase().trim() !== animal2Name) {
+      // Compare with user spelling input, accessing the 'value' property
+      if (formData.animal_1_spelling.value.toLowerCase().trim() !== animal1Name ||
+          formData.animal_2_spelling.value.toLowerCase().trim() !== animal2Name) {
         alert("Spelling is incorrect. Please spell the animals correctly.");
         return;
       }
@@ -171,13 +171,35 @@ function Dashboard() {
     // Add this line for debugging
     console.log(formData);
   };
-
   const customStyles = {
-    ///.....
     menuPortal: provided => ({ ...provided, zIndex: 9999 }),
-    menu: provided => ({ ...provided, zIndex: 9999 })
-    ///.....
-  }
+    menu: provided => ({ ...provided, zIndex: 9999 }),
+    menuList: (provided, state) => ({
+      ...provided,
+      display: state.options.length ? 'block' : 'none',
+    }),
+  };
+
+  const spellingInputStyles = {
+    ...customStyles, // Inherit other styles
+    dropdownIndicator: (provided, state) => ({
+      ...provided,
+      display: 'none',
+    }),
+  };
+
+  const formatChoicesForSelect = (choicesArray, spellingMode) => {
+    return choicesArray.map(choice => {
+      const emojiRegex = /[\p{Emoji}\u200d]/gu; // Regex to match emojis
+      const emojiMatch = choice.match(emojiRegex);
+      const emoji = emojiMatch ? emojiMatch[0] : ''; // Extract the emoji or set to empty string if no match
+
+      return {
+        value: choice,
+        label: spellingMode ? emoji : choice
+      };
+    });
+  };
 
   return (
     <>
@@ -204,47 +226,68 @@ function Dashboard() {
             <>
               <label htmlFor="animal_1">Select Animal and Spell it:</label>
               <Select
-                options={formatChoicesForSelect(choices.animal_1)}
-                value={formatChoicesForSelect(choices.animal_1).find(option => option.value === formData.animal_1)}
+                options={formatChoicesForSelect(choices.animal_1, spellingMode)}
+                value={formatChoicesForSelect(choices.animal_1, spellingMode).find(option => option.value === formData.animal_1)}
                 onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_1')}
                 isSearchable={false}
                 menuPortalTarget={document.body}
-                menuPosition={'fixed'} 
+                menuPosition={'fixed'}
                 styles={customStyles}
               />
-              <input
-                type="text"
-                name="animal_1_spelling"
-                placeholder="Spell the animal"
+              <Select // Modified animal_2_spelling Select component
                 value={formData.animal_1_spelling}
-                onChange={(e) => setFormData({ ...formData, animal_1_spelling: e.target.value })}
-                isSearchable={false}
-                menuPortalTarget={document.body}
-                menuPosition={'fixed'} 
-                styles={customStyles}
+                onChange={(selectedOption) =>
+                  setFormData({
+                    ...formData,
+                    animal_1_spelling: selectedOption || { value: '', label: '' }
+                  })
+                }
+                styles={spellingInputStyles}
+                isClearable
+                // Key changes below:
+                inputValue={formData.animal_1_spelling.value || ''} // Ensure inputValue is always a string
+                onInputChange={(inputValue, { action }) => {
+                  if (action === 'input-change') { // Only update on actual input changes
+                    setFormData({
+                      ...formData,
+                      animal_1_spelling: { value: inputValue, label: inputValue }
+                    });
+                  }
+                }}
               />
 
               <label htmlFor="animal_2">Select Friend and Spell it:</label>
               <Select
-                options={formatChoicesForSelect(choices.animal_2)}
-                value={formatChoicesForSelect(choices.animal_2).find(option => option.value === formData.animal_2)}
+                options={formatChoicesForSelect(choices.animal_2, spellingMode)}
+                value={formatChoicesForSelect(choices.animal_2, spellingMode).find(option => option.value === formData.animal_2)}
                 onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_2')}
                 isSearchable={false}
                 menuPortalTarget={document.body}
-                menuPosition={'fixed'} 
+                menuPosition={'fixed'}
                 styles={customStyles}
               />
-              <input
-                type="text"
-                name="animal_2_spelling"
-                placeholder="Spell the friend"
+              <Select // Modified animal_2_spelling Select component
                 value={formData.animal_2_spelling}
-                onChange={(e) => setFormData({ ...formData, animal_2_spelling: e.target.value })}
-                isSearchable={false}
-                menuPortalTarget={document.body}
-                menuPosition={'fixed'} 
-                styles={customStyles}
+                onChange={(selectedOption) =>
+                  setFormData({
+                    ...formData,
+                    animal_2_spelling: selectedOption || { value: '', label: '' }
+                  })
+                }
+                styles={spellingInputStyles}
+                isClearable
+                // Key changes below:
+                inputValue={formData.animal_2_spelling.value || ''} // Ensure inputValue is always a string
+                onInputChange={(inputValue, { action }) => {
+                  if (action === 'input-change') { // Only update on actual input changes
+                    setFormData({
+                      ...formData,
+                      animal_2_spelling: { value: inputValue, label: inputValue }
+                    });
+                  }
+                }}
               />
+
             </>
           ) : (
             <>
@@ -255,7 +298,7 @@ function Dashboard() {
                 onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_1')}
                 isSearchable={false}
                 menuPortalTarget={document.body}
-                menuPosition={'fixed'} 
+                menuPosition={'fixed'}
                 styles={customStyles}
               />
 
@@ -266,7 +309,7 @@ function Dashboard() {
                 onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_2')}
                 isSearchable={false}
                 menuPortalTarget={document.body}
-                menuPosition={'fixed'} 
+                menuPosition={'fixed'}
                 styles={customStyles}
               />
             </>
@@ -279,7 +322,7 @@ function Dashboard() {
               onChange={(selectedOption) => handleSelectChange(selectedOption, 'activity')}
               isSearchable={false}
               menuPortalTarget={document.body}
-              menuPosition={'fixed'} 
+              menuPosition={'fixed'}
               styles={customStyles}
             />
           </div>
@@ -292,7 +335,7 @@ function Dashboard() {
               onChange={(selectedOption) => handleSelectChange(selectedOption, 'location')}
               isSearchable={false}
               menuPortalTarget={document.body}
-              menuPosition={'fixed'} 
+              menuPosition={'fixed'}
               styles={customStyles}
             />
           </div>
@@ -305,7 +348,7 @@ function Dashboard() {
               onChange={(selectedOption) => handleSelectChange(selectedOption, 'weather')}
               isSearchable={false}
               menuPortalTarget={document.body}
-              menuPosition={'fixed'} 
+              menuPosition={'fixed'}
               styles={customStyles}
             />
           </div>
