@@ -67,12 +67,12 @@ function Dashboard() {
     setFormData(newFormData);
   };
 
-  const handleInputChange = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  };
+  // const handleInputChange = (event) => {
+  //   setFormData({
+  //     ...formData,
+  //     [event.target.name]: event.target.value,
+  //   });
+  // };
 
   const toggleSpellingMode = () => {
     setSpellingMode(!spellingMode);
