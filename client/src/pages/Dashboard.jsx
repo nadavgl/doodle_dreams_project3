@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import Slider from "react-slick"; // Import the Slick carousel
+import Select from 'react-select';
+
 
 import { DELETE_PROMPT, GENERATE_IMAGE } from '../graphql/mutations';
 import { GET_USER_PROMPTS, GET_ALL_PROMPTS } from '../graphql/queries';
@@ -12,7 +14,9 @@ const initialFormData = {
   activity: '',
   location: '',
   weather: '',
-  imageUrl: ''
+  imageUrl: '',
+  animal_1_spelling: '',  // Add this
+  animal_2_spelling: ''   // Add this
 };
 
 const choices = {
@@ -23,6 +27,12 @@ const choices = {
   weather: ['☀️ Sunny', '🌧 Rainy', '❄️ Snowy', '☁️ Cloudy']
 };
 
+const formatChoicesForSelect = (choicesArray) => {
+  return choicesArray.map(choice => ({
+    value: choice,
+    label: choice
+  }));
+};
 
 
 function Dashboard() {
@@ -68,6 +78,7 @@ function Dashboard() {
     setSpellingMode(!spellingMode);
     setFormData(initialFormData); // Reset form when toggling mode
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -150,6 +161,21 @@ function Dashboard() {
     ]
   };
 
+  const handleSelectChange = (selectedOption, fieldName) => {
+    // Make sure you're updating the correct field in formData
+    setFormData({
+      ...formData,
+      [fieldName]: selectedOption.value,
+    });
+
+    // Add this line for debugging
+    console.log(formData);
+  };
+
+  const customStyles = {
+    menuPortal: (provided) => ({ ...provided, zIndex: 9999 }), // Set a high z-index value
+  };
+
   return (
     <>
       <div className="dash">
@@ -174,92 +200,85 @@ function Dashboard() {
           {spellingMode ? (
             <>
               <label htmlFor="animal_1">Select Animal and Spell it:</label>
-              <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
-                <option value="">Select an option</option>
-                {choices.animal_1.map((choice) => (
-                  <option key={choice} value={choice}>
-                    {choice.replace(/[^🐢🐒🐶🐱🐸🐻🐅🐧🦉🦊]/g, '')}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={formatChoicesForSelect(choices.animal_1)}
+                value={formatChoicesForSelect(choices.animal_1).find(option => option.value === formData.animal_1)}
+                onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_1')}
+                isSearchable={false}
+              />
               <input
                 type="text"
                 name="animal_1_spelling"
                 placeholder="Spell the animal"
                 value={formData.animal_1_spelling}
-                onChange={handleInputChange}
+                onChange={(e) => setFormData({ ...formData, animal_1_spelling: e.target.value })}
+                isSearchable={false}
               />
 
               <label htmlFor="animal_2">Select Friend and Spell it:</label>
-              <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
-                <option value="">Select an option</option>
-                {choices.animal_2.map((choice) => (
-                  <option key={choice} value={choice}>
-                    {choice.replace(/[^🦁🐅🐻🦅🦔🦝🐊🦩🐇]/g, '')}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={formatChoicesForSelect(choices.animal_2)}
+                value={formatChoicesForSelect(choices.animal_2).find(option => option.value === formData.animal_2)}
+                onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_2')}
+                isSearchable={false}
+              />
               <input
                 type="text"
                 name="animal_2_spelling"
                 placeholder="Spell the friend"
                 value={formData.animal_2_spelling}
-                onChange={handleInputChange}
+                onChange={(e) => setFormData({ ...formData, animal_2_spelling: e.target.value })}
+                isSearchable={false}
               />
             </>
           ) : (
             <>
               <label htmlFor="animal_1">Select Animal:</label>
-              <select name="animal_1" value={formData.animal_1} onChange={handleInputChange}>
-                <option value="">Select an option</option>
-                {choices.animal_1.map((choice) => (
-                  <option key={choice} value={choice}>
-                    {choice}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={formatChoicesForSelect(choices.animal_1)}
+                value={formatChoicesForSelect(choices.animal_1).find(option => option.value === formData.animal_1)}
+                onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_1')}
+                isSearchable={false}
+              />
 
               <label htmlFor="animal_2">Select Friend:</label>
-              <select name="animal_2" value={formData.animal_2} onChange={handleInputChange}>
-                <option value="">Select an option</option>
-                {choices.animal_2.map((choice) => (
-                  <option key={choice} value={choice}>
-                    {choice}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={formatChoicesForSelect(choices.animal_2)}
+                value={formatChoicesForSelect(choices.animal_2).find(option => option.value === formData.animal_2)}
+                onChange={(selectedOption) => handleSelectChange(selectedOption, 'animal_2')}
+                isSearchable={false}
+              />
             </>
           )}
-
           <label htmlFor="activity">Select Activity:</label>
-          <select name="activity" value={formData.activity} onChange={handleInputChange}>
-            <option value="">Select an option</option>
-            {choices.activity.map((choice) => (
-              <option key={choice} value={choice}>
-                {choice}
-              </option>
-            ))}
-          </select>
+          <div className="react-select-container">
+            <Select
+              options={formatChoicesForSelect(choices.activity)}
+              value={formatChoicesForSelect(choices.activity).find(option => option.value === formData.activity)}
+              onChange={(selectedOption) => handleSelectChange(selectedOption, 'activity')}
+              isSearchable={false}
+            />
+          </div>
 
           <label htmlFor="location">Select Location:</label>
-          <select name="location" value={formData.location} onChange={handleInputChange}>
-            <option value="">Select an option</option>
-            {choices.location.map((choice) => (
-              <option key={choice} value={choice}>
-                {choice}
-              </option>
-            ))}
-          </select>
+          <div className="react-select-container">
+            <Select
+              options={formatChoicesForSelect(choices.location)}
+              value={formatChoicesForSelect(choices.location).find(option => option.value === formData.location)}
+              onChange={(selectedOption) => handleSelectChange(selectedOption, 'location')}
+              isSearchable={false}
+            />
+          </div>
 
           <label htmlFor="weather">Select Weather:</label>
-          <select name="weather" value={formData.weather} onChange={handleInputChange}>
-            <option value="">Select an option</option>
-            {choices.weather.map((choice) => (
-              <option key={choice} value={choice}>
-                {choice}
-              </option>
-            ))}
-          </select>
+          <div className="react-select-container">
+            <Select
+              options={formatChoicesForSelect(choices.weather)}
+              value={formatChoicesForSelect(choices.weather).find(option => option.value === formData.weather)}
+              onChange={(selectedOption) => handleSelectChange(selectedOption, 'weather')}
+              isSearchable={false}
+            />
+          </div>
 
           <button type="button" className='purple-button' onClick={generateRandomFormData}>
             Randomize 🌀

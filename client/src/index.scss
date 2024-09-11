@@ -215,9 +215,9 @@ form {
   input:focus {
     outline: 2px solid lighten($purple, 10%);
 
-    &:hover {
-      border: 1px solid #666;
-    }
+    // &:hover {
+    //   border: 1px solid #666;
+    // }
   }
 
   button {
@@ -368,7 +368,42 @@ section.prompt-container {
   }
 }
 
+// // ... your existing SCSS code ...
 
+// // React Select specific styles
+/* Add this to your CSS file */
+.react-select__menu {
+  z-index: 9999; /* Ensure dropdown is on top */
+}
+
+
+// Target the Select container directly if possible
+.react-select-container {
+  position: relative; // This ensures the dropdown is positioned relative to this container
+  // contain: content;  // We'll try without containment initially
+}
+
+.form-pic label {
+  z-index: 1; // Ensure labels are below the dropdown 
+}
+
+// // Additional styling to ensure the dropdown doesn't overlap other content
+// .react-select__control {
+//   // Add any necessary styles to control the size and positioning of the Select component itself
+// }
+
+// .react-select__menu-list {
+//   // Add styles to control the size and positioning of the dropdown list if needed
+// }
+// ... (rest of your existing SCSS code)
+
+
+// // React Select specific styles
+// .react-select__menu {
+//   z-index: 10000; // A very high z-index to ensure it's on top
+// }
+
+// ... (rest of your existing SCSS code)
 
 // @media (prefers-color-scheme: dark) {
 //   :root {
