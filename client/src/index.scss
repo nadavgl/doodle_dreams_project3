@@ -269,8 +269,7 @@ form {
   background-size: cover;
   padding-top: 20px;
   padding-bottom: 40px;
-
-
+  background-attachment: fixed;  // Prevent the background from moving
 }
 
 
