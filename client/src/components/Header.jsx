@@ -35,9 +35,9 @@ function Header() {
           <button onClick={handleLogout}>Log Out</button>
         </div>
       ) : (
+        // Optionally, hide the auth links when user is not logged in
         <nav>
           <NavLink to="/">Home</NavLink>
-          <NavLink to="/auth">Log In or Register</NavLink>
         </nav>
       )}
     </header>

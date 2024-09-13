@@ -387,6 +387,34 @@ section.prompt-container {
   z-index: 1; // Ensure labels are below the dropdown 
 }
 
+.hero {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero .button { // Target .button only within .hero (your homepage)
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+}
+
+.button.is-purple {
+  background-color: $purple; /* Purple */
+  color: white;
+  border: none;
+  &:hover {
+    background: darken($purple, 10%); // Darken the background color on hover
+    color: #fff;
+    outline: none; // Ensure no outline is added
+  }
+}
+
+
+
+
+
+
 // // Additional styling to ensure the dropdown doesn't overlap other content
 // .react-select__control {
 //   // Add any necessary styles to control the size and positioning of the Select component itself
